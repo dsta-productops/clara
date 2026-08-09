@@ -1,14 +1,22 @@
-// CLARA build script.
-// Reads modular sources from persona.md, conventions/, and artefacts/,
-// and emits three derived distributions:
-//   dist/portal/*.mdx     — lean per-artefact invocation guides for the portal.
-//                           One short copy block pointing CLARA at the artefact
-//                           by slug; CLARA herself holds the procedure.
-//   dist/SKILL.md         — vendor-neutral LLM skill bundle. Filename retained
-//                           for Anthropic skill compatibility; content is
-//                           neutral and loads into any system-prompt slot.
-//   dist/system-prompt.md — flat system prompt for hosts that take a single
-//                           system prompt string (no skill protocol).
+// CLARA build script (platform-aware).
+//
+// CLARA is authored once as a shared core (persona, artefacts, and the policy
+// conventions context/kb-paths/cascade) plus a thin per-platform adapter
+// (platform/<name>/: mcp, filing, field-notes, setup-kb conventions + demo KB).
+//
+// Core sources carry conditional blocks:
+//     @@if plane@@ ... @@endif@@
+//     @@if confluence@@ ... @@endif@@
+// The build strips the blocks that don't match the target platform, so a
+// single core reproduces both platform distributions with no drift.
+//
+// Select the platform with CLARA_PLATFORM=plane|confluence (default: plane).
+// Output dir is CLARA_OUT (default: dist).
+//
+// Emits:
+//   <out>/portal/*.mdx     — lean per-artefact invocation guides for the portal.
+//   <out>/SKILL.md         — vendor-neutral LLM skill bundle.
+//   <out>/system-prompt.md — flat system prompt for hosts without skill protocol.
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -17,6 +25,82 @@ import { execSync } from 'node:child_process';
 import matter from 'gray-matter';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+// ---------------------------------------------------------------------------
+// Platform configuration
+// ---------------------------------------------------------------------------
+
+type PlatformName = 'plane' | 'confluence';
+
+interface PlatformConfig {
+  tool: string; // "Plane" | "Confluence"
+  substrate: string; // "Plane project" | "Confluence space"
+  contextKey: string; // frontmatter key: "planeContext" | "confluenceContext"
+  systemPromptMcp: string; // "Plane MCP" | "Confluence MCP"
+  skillDescription: string;
+  systemPromptTitle: string;
+}
+
+const PLATFORMS: Record<PlatformName, PlatformConfig> = {
+  plane: {
+    tool: 'Plane',
+    substrate: 'Plane project',
+    contextKey: 'planeContext',
+    systemPromptMcp: 'Plane MCP',
+    skillDescription:
+      "CLARA — Research & Design assistant for Plane. Load this skill (or paste into a system prompt) on any LLM that has Plane access. CLARA drafts, refines, and files Research artefacts (personas, journey maps, research synthesis, PRDs, capability specs, mission threads, etc.) into the programme's Knowledge Base under a disciplined hierarchy. Users invoke her with `Use CLARA's `<artefact-slug>` for <programme>.`",
+    systemPromptTitle: 'CLARA — Research & Design assistant for Plane',
+  },
+  confluence: {
+    tool: 'Confluence',
+    substrate: 'Confluence space',
+    contextKey: 'confluenceContext',
+    systemPromptMcp: 'Confluence MCP',
+    skillDescription:
+      "CLARA — Confluence Learning & AI Research Assistant. Load this skill (or paste into a system prompt) on any LLM that has Confluence access. CLARA drafts, refines, and files Research artefacts (personas, journey maps, research synthesis, PRDs, capability specs, mission threads, etc.) into the programme's Knowledge Base under a disciplined hierarchy. Users invoke her with `Use CLARA's `<artefact-slug>` for <programme>.`",
+    systemPromptTitle: 'CLARA — Confluence Learning & AI Research Assistant',
+  },
+};
+
+const PLATFORM = (process.env.CLARA_PLATFORM ?? 'plane') as PlatformName;
+if (!PLATFORMS[PLATFORM]) {
+  console.error(`Unknown CLARA_PLATFORM "${PLATFORM}". Use "plane" or "confluence".`);
+  process.exit(1);
+}
+const P = PLATFORMS[PLATFORM];
+// Output dir resolves relative to the current working directory (the repo
+// root), so once core/ is vendored via git subtree the dist lands at the
+// platform repo root rather than inside core/.
+const OUT_ENV = process.env.CLARA_OUT ?? 'dist';
+const OUT_BASE = path.isAbsolute(OUT_ENV) ? OUT_ENV : path.join(process.cwd(), OUT_ENV);
+
+// Adapter directory for the selected platform.
+const ADAPTER = path.join('platform', PLATFORM);
+
+// ---------------------------------------------------------------------------
+// Conditional-block stripping
+// ---------------------------------------------------------------------------
+
+// Remove @@if <other>@@...@@endif@@ blocks; unwrap @@if <target>@@ blocks.
+// Nesting is supported via a keep-stack. Marker lines are dropped entirely.
+function stripConditionals(text: string, platform: PlatformName): string {
+  const lines = text.split('\n');
+  const out: string[] = [];
+  const keep: boolean[] = [true];
+  for (const line of lines) {
+    const open = line.trim().match(/^@@if (plane|confluence)@@$/);
+    if (open) {
+      keep.push(keep[keep.length - 1] && open[1] === platform);
+      continue;
+    }
+    if (line.trim() === '@@endif@@') {
+      if (keep.length > 1) keep.pop();
+      continue;
+    }
+    if (keep[keep.length - 1]) out.push(line);
+  }
+  return out.join('\n');
+}
 
 const SECTION_NAMES = ['intro', 'context', 'inputs', 'draft', 'filing', 'tips'] as const;
 type SectionName = (typeof SECTION_NAMES)[number];
@@ -51,8 +135,15 @@ function parseSections(body: string): Sections {
   return out;
 }
 
-async function readFile(rel: string): Promise<string> {
-  return (await fs.readFile(path.join(ROOT, rel), 'utf8')).trim();
+// Read a shared-core source and strip conditionals for the active platform.
+async function readCore(rel: string): Promise<string> {
+  const raw = (await fs.readFile(path.join(ROOT, rel), 'utf8')).trim();
+  return stripConditionals(raw, PLATFORM).trim();
+}
+
+// Read a platform adapter file verbatim (already platform-specific).
+async function readAdapter(rel: string): Promise<string> {
+  return (await fs.readFile(path.join(ROOT, ADAPTER, rel), 'utf8')).trim();
 }
 
 function getSha(): string {
@@ -71,9 +162,6 @@ function extractShortPreamble(personaMd: string): string {
   return m[1].trim();
 }
 
-// Strip the H1 title and the Short preamble section. Used for the full-persona
-// distributions (SKILL.md, system-prompt.md) where the persona is presented once
-// at the top rather than embedded per-prompt.
 function extractFullPersona(personaMd: string): string {
   return personaMd
     .replace(/^#\s+[^\n]*\n+/, '')
@@ -86,8 +174,9 @@ async function loadArtefacts(): Promise<ArtefactSource[]> {
   const files = (await fs.readdir(dir)).filter((f) => f.endsWith('.md')).sort();
   const out: ArtefactSource[] = [];
   for (const f of files) {
-    const src = await fs.readFile(path.join(dir, f), 'utf8');
-    const parsed = matter(src);
+    const raw = await fs.readFile(path.join(dir, f), 'utf8');
+    const stripped = stripConditionals(raw, PLATFORM);
+    const parsed = matter(stripped);
     out.push({
       slug: f.replace(/\.md$/, ''),
       frontmatter: parsed.data,
@@ -150,40 +239,18 @@ function assemblePromptBody(opts: {
   return parts.join('\n').trim();
 }
 
-// Strip author-side token annotations from a context bullet so user-facing
-// copy doesn't leak template variables. Handles the common phrasings used
-// across the artefact sources:
-//   "... — this becomes `{{persona-name}}`."
-//   "... This becomes `{{capability-name}}`."
-//   "... This is the `{{topic}}` token."
 function stripTokenAnnotations(line: string): string {
   return line
-    // "Becomes `{{token}}` and X" → "X" (capitalised)
     .replace(/\s*Becomes\s*`\{\{[^}]+\}\}`\s+and\s+(\w)/gi, (_m, ch: string) => ' ' + ch.toUpperCase())
-    // "Becomes `{{token}}`."
     .replace(/\s*Becomes\s*`\{\{[^}]+\}\}`\.?/gi, '')
-    // Legacy phrasings from the older sources
     .replace(/\s*[—-]\s*this becomes\s*`\{\{[^}]+\}\}`\.?/gi, '.')
     .replace(/\.?\s*This becomes\s*`\{\{[^}]+\}\}`\.?/g, '.')
     .replace(/\.?\s*This is the\s*`\{\{[^}]+\}\}`\s*token\.?/g, '.')
-    // Ensure the bullet ends with a single period
     .replace(/\.\.+$/g, '.')
     .replace(/([^.])\s*$/, '$1.')
     .trim();
 }
 
-
-// Emit the lean portal output for an artefact: structured frontmatter
-// (including the literal copyBlock for the page's hero copy card) and a
-// body containing only the user-facing context — "What CLARA will ask
-// you for", "Where the output lands", and tips. Persona, conventions,
-// Step 1-4 boilerplate, draft instructions, filing rules — all omitted.
-// CLARA herself supplies them at runtime from her loaded system prompt.
-//
-// The body intentionally does NOT carry the copy block (the page template
-// renders it from frontmatter as a hero card with a dedicated Copy button)
-// or the artefact intro (the page lede already shows the `task` field, which
-// the intro just paraphrases).
 function emitPortalMdx(opts: { art: ArtefactSource; sha: string }): string {
   const { art, sha } = opts;
   const fm = { ...art.frontmatter } as Record<string, unknown>;
@@ -195,16 +262,12 @@ function emitPortalMdx(opts: { art: ArtefactSource; sha: string }): string {
   const tips = art.sections.tips?.trim() ?? '';
   const contextSection = art.sections.context?.trim() ?? '';
 
-  const cc = (art.frontmatter.confluenceContext ?? {}) as {
+  const cc = (art.frontmatter[P.contextKey] ?? {}) as {
     inputs?: Array<{ what: string; description?: string }>;
     outputPathTemplate?: string;
   };
   const outputPath = (cc.outputPathTemplate ?? '').trim();
 
-  // Surface the source-authored `# context` bullets — these are the
-  // artefact-specific questions CLARA will actually ask (name tokens plus
-  // any extra context-shaping inputs like interviewee profile, outcome
-  // question, scope refs). Strip the author-side `{{token}}` annotations.
   const contextBullets = contextSection
     .split('\n')
     .filter((line) => line.trim().startsWith('-'))
@@ -217,9 +280,9 @@ function emitPortalMdx(opts: { art: ArtefactSource; sha: string }): string {
   ];
   if (cc.inputs?.length) {
     willAskFor.push(
-      '- **Inputs** — CLARA will search the programme\'s Confluence space for ' +
+      `- **Inputs** — CLARA will search the programme's ${P.substrate} for ` +
         cc.inputs.map((i) => i.what.toLowerCase()).join('; ') +
-        '. You can also paste fresh material if it\'s not in Confluence yet.',
+        `. You can also paste fresh material if it's not in ${P.tool} yet.`,
     );
   }
 
@@ -230,7 +293,7 @@ function emitPortalMdx(opts: { art: ArtefactSource; sha: string }): string {
   ];
 
   if (outputPath) {
-    sections.push('', '## Where the output lands', '', `\`${outputPath}\` inside your programme's Confluence space.`);
+    sections.push('', '## Where the output lands', '', `\`${outputPath}\` inside your programme's ${P.substrate}.`);
   }
 
   if (tips) {
@@ -244,16 +307,12 @@ function emitPortalMdx(opts: { art: ArtefactSource; sha: string }): string {
   return matter.stringify('\n' + body + '\n', fm);
 }
 
-// Assemble the body shared by SKILL.md and system-prompt.md: full persona,
-// the four conventions in full (keeping "Why it matters" since these are
-// loaded once and benefit from rationale context), an artefact index, and
-// the per-artefact briefs concatenated.
 function assembleFullDistribution(opts: {
   fullPersona: string;
   contextMd: string;
   kbPathsMd: string;
   cascadeMd: string;
-  confluenceMcpMd: string;
+  mcpMd: string;
   setupKbMd: string;
   fieldNotesMd: string;
   artefacts: ArtefactSource[];
@@ -266,7 +325,7 @@ function assembleFullDistribution(opts: {
     contextMd,
     kbPathsMd,
     cascadeMd,
-    confluenceMcpMd,
+    mcpMd,
     setupKbMd,
     fieldNotesMd,
     artefacts,
@@ -280,8 +339,7 @@ function assembleFullDistribution(opts: {
   const indexLines = ready.map((a) => {
     const task = String(a.frontmatter.task ?? '').trim();
     const outPath = String(
-      (a.frontmatter.confluenceContext as Record<string, unknown> | undefined)?.outputPathTemplate ??
-        '',
+      (a.frontmatter[P.contextKey] as Record<string, unknown> | undefined)?.outputPathTemplate ?? '',
     ).trim();
     return `- **\`${a.slug}\`** — ${task}${outPath ? ` → \`${outPath}\`` : ''}`;
   });
@@ -294,14 +352,12 @@ function assembleFullDistribution(opts: {
       cascadeRule,
       filingRule,
     });
-    return [
-      `### ${title} (\`${a.slug}\`)`,
-      '',
-      '```',
-      brief,
-      '```',
-    ].join('\n');
+    return [`### ${title} (\`${a.slug}\`)`, '', '```', brief, '```'].join('\n');
   });
+
+  // The MCP convention's own H1 supplies the section header ("Plane MCP
+  // filing discipline" / "Confluence MCP filing discipline").
+  const mcpTitle = (mcpMd.match(/^#\s+(.+)$/m)?.[1] ?? 'MCP filing discipline').trim();
 
   const convention = (name: string, md: string) =>
     ['### ' + name, '', bumpHeadings(stripH1(md), 2), ''].join('\n');
@@ -314,7 +370,7 @@ function assembleFullDistribution(opts: {
     convention('Confirming the run context', contextMd),
     convention('Knowledge Base path convention', kbPathsMd),
     convention('Track ↔ Programme-wide cascade', cascadeMd),
-    convention('Confluence MCP filing discipline', confluenceMcpMd),
+    convention(mcpTitle, mcpMd),
     convention('KB setup flows (setup-kb, add-track)', setupKbMd),
     convention('Field notes', fieldNotesMd),
     '## Artefact catalogue',
@@ -331,30 +387,24 @@ function assembleFullDistribution(opts: {
   ].join('\n');
 }
 
-// CLARA ships as a vendor-neutral LLM skill: the same body loads into any
-// host that supports a system prompt or a skill bundle. The SKILL.md filename
-// is retained because Anthropic's skill loader expects it; the description
-// and content are framed in vendor-neutral language so other hosts can
-// consume the same file.
 function emitSkillMd(body: string): string {
   const fm = {
     name: 'clara',
-    description:
-      'CLARA — Confluence Learning & AI Research Assistant. Load this skill (or paste into a system prompt) on any LLM that has Confluence access. CLARA drafts, refines, and files Research artefacts (personas, journey maps, research synthesis, PRDs, capability specs, mission threads, etc.) into the programme\'s Knowledge Base under a disciplined hierarchy. Users invoke her with `Use CLARA\'s `<artefact-slug>` for <programme>.`',
+    description: P.skillDescription,
   };
   return matter.stringify('\n' + body + '\n', fm);
 }
 
 function emitSystemPromptMd(body: string): string {
   return [
-    '# CLARA — Confluence Learning & AI Research Assistant',
+    `# ${P.systemPromptTitle}`,
     '',
     '<!--',
-    '  Vendor-neutral LLM skill. Install into any LLM that has Confluence MCP',
+    `  Vendor-neutral LLM skill. Install into any LLM that has ${P.systemPromptMcp}`,
     '  access by pasting this file into the system-prompt slot, the org-wide',
     '  default-instructions field, the gateway preamble, or whatever your',
     '  stack provides. Same content as SKILL.md; different filename for hosts',
-    '  that don\'t use the skill protocol.',
+    "  that don't use the skill protocol.",
     '-->',
     '',
     body,
@@ -363,39 +413,32 @@ function emitSystemPromptMd(body: string): string {
 }
 
 async function main() {
-  const personaMd = await readFile('persona.md');
+  const personaMd = await readCore('persona.md');
   const preamble = extractShortPreamble(personaMd);
   const fullPersona = extractFullPersona(personaMd);
 
-  const contextMd = await readFile('conventions/context.md');
-  const kbPathsMd = await readFile('conventions/kb-paths.md');
-  const cascadeMd = await readFile('conventions/cascade.md');
-  const confluenceMcpMd = await readFile('conventions/confluence-mcp.md');
-  const setupKbMd = await readFile('conventions/setup-kb.md');
-  const fieldNotesMd = await readFile('conventions/field-notes.md');
+  // Shared-core policy conventions (conditional-stripped).
+  const contextMd = await readCore('conventions/context.md');
+  const kbPathsMd = await readCore('conventions/kb-paths.md');
+  const cascadeMd = await readCore('conventions/cascade.md');
+
+  // Platform adapter conventions (verbatim).
+  const mcpMd = await readAdapter('conventions/mcp.md');
+  const setupKbMd = await readAdapter('conventions/setup-kb.md');
+  const fieldNotesMd = await readAdapter('conventions/field-notes.md');
 
   const contextRule = stripWhyItMatters(stripH1(contextMd));
   const cascadeRule = stripWhyItMatters(stripH1(cascadeMd));
-  const filingRule = stripWhyItMatters(stripH1(confluenceMcpMd));
+  const filingRule = stripWhyItMatters(stripH1(mcpMd));
 
   const artefacts = await loadArtefacts();
   const sha = getSha();
 
-  const portalDir = path.join(ROOT, 'dist', 'portal');
+  const portalDir = path.join(OUT_BASE, 'portal');
   await fs.mkdir(portalDir, { recursive: true });
 
-  // Clear any stale lean outputs so renamed/removed artefacts don't linger.
   for (const f of await fs.readdir(portalDir)) {
     if (f.endsWith('.mdx')) await fs.unlink(path.join(portalDir, f));
-  }
-
-  // Clean up the legacy thick-prompt directory if it still exists from a
-  // previous build. The portal now reads from dist/portal/.
-  const legacyPromptsDir = path.join(ROOT, 'dist', 'prompts');
-  try {
-    await fs.rm(legacyPromptsDir, { recursive: true, force: true });
-  } catch {
-    /* nothing to clean */
   }
 
   let built = 0;
@@ -409,7 +452,7 @@ async function main() {
     const mdx = emitPortalMdx({ art, sha });
     await fs.writeFile(path.join(portalDir, `${art.slug}.mdx`), mdx, 'utf8');
     built++;
-    console.log(`  build  portal/${art.slug}.mdx`);
+    console.log(`  build  ${OUT_ENV}/portal/${art.slug}.mdx`);
   }
 
   const distributionBody = assembleFullDistribution({
@@ -417,7 +460,7 @@ async function main() {
     contextMd,
     kbPathsMd,
     cascadeMd,
-    confluenceMcpMd,
+    mcpMd,
     setupKbMd,
     fieldNotesMd,
     artefacts,
@@ -426,34 +469,30 @@ async function main() {
     filingRule,
   });
 
-  await fs.writeFile(path.join(ROOT, 'dist', 'SKILL.md'), emitSkillMd(distributionBody), 'utf8');
-  console.log('  build  SKILL.md');
+  await fs.writeFile(path.join(OUT_BASE, 'SKILL.md'), emitSkillMd(distributionBody), 'utf8');
+  console.log(`  build  ${OUT_ENV}/SKILL.md`);
 
   await fs.writeFile(
-    path.join(ROOT, 'dist', 'system-prompt.md'),
+    path.join(OUT_BASE, 'system-prompt.md'),
     emitSystemPromptMd(distributionBody),
     'utf8',
   );
-  console.log('  build  system-prompt.md');
+  console.log(`  build  ${OUT_ENV}/system-prompt.md`);
 
   console.log('');
-  console.log(`Built ${built} artefact(s), skipped ${skipped} stub(s). Source SHA: ${sha}`);
+  console.log(
+    `Platform: ${PLATFORM}. Built ${built} artefact(s), skipped ${skipped} stub(s). Source SHA: ${sha}`,
+  );
 }
 
 function stripH1(md: string): string {
   return md.replace(/^#\s+[^\n]*\n+/, '').trim();
 }
 
-// Strip "## Why it matters" (and anything after it) from convention bodies
-// when inlining into a prompt — that section is meta-documentation, not
-// runtime guidance for the LLM.
 function stripWhyItMatters(md: string): string {
   return md.replace(/\n##\s+Why it matters[\s\S]*$/i, '').trim();
 }
 
-// Bump every Markdown heading level by `by` (e.g. ## → ####). Used when
-// embedding a convention body underneath an outer heading so its own
-// subheadings don't collide at the same level.
 function bumpHeadings(md: string, by: number): string {
   return md.replace(/^(#+)(\s)/gm, (_, hashes: string, space: string) => '#'.repeat(hashes.length + by) + space);
 }

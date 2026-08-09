@@ -6,16 +6,16 @@ A one-page brief for the platform / cloud team enabling CLARA in your environmen
 
 CLARA is a **vendor-neutral LLM skill**: a single Markdown file loaded into the LLM's context at session start. Once installed, every conversation against that LLM has CLARA preloaded — end users just paste a one-line invocation from the [ProductOps Co-pilot portal](https://copilot.productops.dsta) and CLARA drives the rest.
 
-CLARA is **Research-only** and **Confluence-only**. She reads and writes a programme's Confluence Knowledge Base via MCP. She does not require any other integration.
+CLARA is **Research-only** and **knowledge-base-native**. She reads and writes a programme's Knowledge Base via MCP — Plane or Confluence, depending on which platform build you install (`clara-plane` or `clara-confluence`). She does not require any other integration.
 
 ## What you need
 
 Two things:
 
 1. **CLARA's skill file.** Built artefact from this repo at `dist/system-prompt.md` (flat) or `dist/SKILL.md` (skill-protocol format — same content, frontmatter wrapper). Pick the one that matches your stack.
-2. **Confluence MCP access** wired into the LLM. CLARA does not require a separate connector — she uses whichever Confluence MCP your LLM already has.
+2. **Knowledge-base MCP access** wired into the LLM (Plane MCP for `clara-plane`, Confluence MCP for `clara-confluence`). CLARA does not require a separate connector — she uses whichever MCP your LLM already has.
 
-If your stack doesn't have Confluence MCP yet, that's the prerequisite. CLARA can't read or file without it.
+If your stack doesn't have the matching knowledge-base MCP yet, that's the prerequisite. CLARA can't read or file without it.
 
 ## Where the skill file goes
 
@@ -52,40 +52,40 @@ These are infrequent (target: monthly at most once steady-state). When CLARA shi
 
 ## Per-programme onboarding (programme lead)
 
-Separate from the environment-level install above. Each programme that adopts CLARA does a one-time setup in its own Confluence space:
+Separate from the environment-level install above. Each programme that adopts CLARA does a one-time setup in its own knowledge base (a Plane project or a Confluence space):
 
-1. Create a top-level page named **`Knowledge Base`** at the root of the programme's space. This is where all CLARA-filed artefacts live.
-2. Decide on the programme's track structure ahead of first use — workstream / capability area / feature line / sub-system, whatever applies. Track names go under `Knowledge Base` as second-level pages. Artefacts spanning tracks file under the literal track name `Programme-wide`.
-3. No further setup needed. CLARA creates artefact-type folders (`Personas (<track>)`, `Journeys (<track>)`, `PRDs (<track>)`, etc.) on first use, working top-down — placeholder pages are created automatically before the artefact lands.
+1. Create a top-level page named **`Knowledge Base`** at the root of the programme's project. This is where all CLARA-filed artefacts live.
+2. Decide on the programme's track structure ahead of first use — workstream / capability area / feature line / sub-system, whatever applies. Track names go under `Knowledge Base` as child pages. Artefacts spanning tracks file under the literal track name `Programme-wide`.
+3. No further setup needed. CLARA creates artefact-type nodes (`Personas`, `Journeys`, `PRDs`, etc.) on first use, working top-down — placeholder pages are created automatically before the artefact lands.
 
-The resulting hierarchy:
+The resulting hierarchy (each node a page, nested by `parent_id`):
 
 ```
 Knowledge Base /
   Programme-wide /
-    Personas (Programme-wide) /
-    PRDs (Programme-wide) /
+    Personas /
+    PRDs /
     ...
   <track> /
-    Personas (<track>) /
-    Journeys (<track>) /
-    PRDs (<track>) /
+    Personas /
+    Journeys /
+    PRDs /
     ...
 ```
 
-If a level can't be created (permissions, naming conflict, missing parent), CLARA stops and reports — never silently files at the space root.
+If a level can't be created (permissions, missing parent, anything else), CLARA stops and reports — never silently files at the project root.
 
 ## Testing the install
 
 After installing the skill file, open a fresh chat against the configured LLM and paste:
 
 ```
-Use CLARA's `persona-generator` for <a programme name with a Confluence space you can access>.
+Use CLARA's `persona-generator` for <a programme name with a knowledge base you can access>.
 ```
 
-CLARA should respond with a one-line route confirmation ("Running `persona-generator` for <programme>") and a batched question asking for the track, persona name, and whether to search Confluence or accept paste-ins. If she instead launches into drafting without asking, the skill file didn't load — check that the system-prompt slot you used actually injects into user conversations.
+CLARA should respond with a one-line route confirmation ("Running `persona-generator` for <programme>") and a batched question asking for the track, persona name, and whether to search the knowledge base or accept paste-ins. If she instead launches into drafting without asking, the skill file didn't load — check that the system-prompt slot you used actually injects into user conversations.
 
-**Optional: demo knowledge base.** CLARA ships a self-contained demo Confluence KB at `demo-kb/SKYPROTECT-setup.md` for end-to-end testing without touching a real programme's space. Run that setup to create a `SKYPROTECT` space populated with sample interview transcripts, prior knowledge pages, and a Knowledge Base skeleton — then `Use CLARA's \`persona-generator\` for SKYPROTECT.` will exercise the full read → draft → file loop against fixture data. SKYPROTECT is **not** a default programme; it doesn't exist until you run the setup.
+**Optional: demo knowledge base.** CLARA ships a self-contained demo KB at `demo-kb/SKYPROTECT-setup.md` for end-to-end testing without touching a real programme's project. Run that setup to create a `SKYPROTECT` project populated with sample interview transcripts, prior-knowledge pages, and a Knowledge Base skeleton — then `Use CLARA's \`persona-generator\` for SKYPROTECT.` will exercise the full read → draft → file loop against fixture data. SKYPROTECT is **not** a default programme; it doesn't exist until you run the setup.
 
 ## Where things live
 

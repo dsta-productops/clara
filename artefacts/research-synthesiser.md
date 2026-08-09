@@ -8,10 +8,20 @@ expectedOutput: "A single markdown page with four sections — Themes, Friction 
 inputsFrom:
   - interview-guide-generator
   - prior-knowledge-summariser
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Interview transcripts, field/exercise observation notes, operator session notes"
+@@if confluence@@
       description: "Pages under folders/pages named *Interviews*, *Field notes*, *Sessions*, *Exercises* (or with 'interview', 'transcript', 'session-notes', 'observation', 'field-notes', 'exercise' in titles). Restrict to this programme's space."
+@@endif@@
+@@if plane@@
+      description: "Field-note pages under the `Field-notes` node (or pages with 'interview', 'transcript', 'session-notes', 'observation', 'field-notes', 'exercise' in titles). Restrict to this programme's Plane project."
+@@endif@@
     - what: "Prior-knowledge summary on the topic (optional)"
       description: "Search both `Knowledge Base/{{track}}/Prior-knowledge/*` and `Knowledge Base/Programme-wide/Prior-knowledge/*`. Use it for grounding — the synthesis should build on what's already known, not re-discover it."
     - what: "Interview guide used in the field (optional)"
@@ -31,10 +41,21 @@ Use this prompt to synthesise a batch of interview transcripts and field observa
 
 # inputs
 
+@@if confluence@@
 - Search the programme's space broadly for interview transcripts, field-notes, observation pages, and exercise debriefs. Pages under folders/pages named *Interviews*, *Field notes*, *Sessions*, *Exercises* (or with `interview`, `transcript`, `session-notes`, `observation`, `field-notes`, `exercise` in titles).
+@@endif@@
+@@if plane@@
+- Search the programme's Plane project broadly for interview transcripts, field-notes, observation notes, and exercise debriefs. Field-note pages under the `Field-notes` node (or pages with `interview`, `transcript`, `session-notes`, `observation`, `field-notes`, `exercise` in titles).
+@@endif@@
 - Search both `Knowledge Base/{{track}}/Prior-knowledge/*` and `Knowledge Base/Programme-wide/Prior-knowledge/*` for prior-knowledge summaries that should ground the synthesis.
 - Search both `Knowledge Base/{{track}}/Interview-guides/*` and `Knowledge Base/Programme-wide/Interview-guides/*` for the interview guide used in the field — the guide's outcome question tells you what the synthesis is meant to answer.
+@@if confluence@@
 - Show the user everything you found — separately for the track folder, the Programme-wide folder, and the broader space — and ask them to confirm or refine the set before reading in detail.
+@@endif@@
+@@if plane@@
+- Show the user everything you found — separately for the track node, the Programme-wide node, and the broader project — and ask them to confirm or refine the set before reading in detail.
+@@endif@@
+- **Stamp Session IDs first — before synthesising.** Once the field-note set is confirmed, ensure every note in it carries a Session ID. For any note the user created that does not yet have one, auto-assign and stamp it **now**, without prompting (the Session-ID write-back carve-out in `persona.md` and `field-notes.md`). This is a required step that runs *before* any synthesis is drafted, so every piece of evidence is citable by a stable Session ID from the first draft onward. If a stamp fails (e.g. permissions), stop and report — do not synthesise with an unstamped note.
 - In copy-paste mode: ask the user to paste transcripts and observation notes. Mark sessions with `--- Session [N] / [role] / [date] ---` so citations stay traceable.
 
 # draft
@@ -90,8 +111,14 @@ Things the data didn't answer — for the next round of field engagement, or for
 
 # filing
 
+@@if confluence@@
 - Create or update a page at `Knowledge Base/{{track}}/Research-synthesis`. Link back to source pages. Confirm and show the link.
 - In copy-paste mode: return the full markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create or update a page at `Knowledge Base/{{track}}/Research-synthesis`. Link the page to its source pages. Confirm and show the link.
+- In copy-paste mode: return the full markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

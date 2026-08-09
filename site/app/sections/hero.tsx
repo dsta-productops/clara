@@ -23,7 +23,7 @@ export function Hero() {
           </Heading>
 
           <Text size="lg" variant="muted" className="text-balance max-w-2xl leading-relaxed">
-            CLARA reads your programme&rsquo;s Confluence knowledge base, turns raw
+            CLARA reads your programme&rsquo;s knowledge base, turns raw
             field notes into evidence-backed insights, and files them as research
             artefacts across the Research, Design, and Test phases of the
             ProductOps pipeline &mdash; personas, journeys, PRDs, storyboards,
@@ -32,7 +32,7 @@ export function Hero() {
 
           <div className="flex flex-wrap gap-2 pt-2">
             <Badge variant="outline">Cites every finding</Badge>
-            <Badge variant="outline">Files back to Confluence</Badge>
+            <Badge variant="outline">Files back to your KB</Badge>
             <Badge variant="outline">Air-gap ready</Badge>
           </div>
 

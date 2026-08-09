@@ -6,10 +6,20 @@ tool: "clara"
 task: "summarise prior knowledge from past programmes on a specific topic"
 expectedOutput: "A structured summary of past programme learnings with patterns, contradictions, adjacent work, and source citations."
 inputsFrom: []
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Past programme writeups touching the topic"
+@@if confluence@@
       description: "Search Confluence broadly for pages mentioning the topic across all programmes. Common locations: programme spaces, research writeups, retrospectives, lessons-learned pages, post-iteration reviews. Look for pages with 'research', 'retrospective', 'lessons-learned' in titles."
+@@endif@@
+@@if plane@@
+      description: "Search the Plane project broadly for pages mentioning the topic across all programmes. Common locations: programme projects, research writeups, retrospectives, lessons-learned pages, post-iteration reviews. Look for pages with 'research', 'retrospective', 'lessons-learned' in titles."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Prior-knowledge/{{topic}}"
 visibility: "public"
 status: "ready"
@@ -25,8 +35,14 @@ Use this prompt to surface what's already known about a topic across past progra
 
 # inputs
 
+@@if confluence@@
 - Search Confluence **broadly** — across all programmes / spaces you can reach, not just the current programme. Look for pages under research writeups, retrospective notes, post-iteration reviews, and any other space's Knowledge Base (or with `research`, `retrospective`, `lessons-learned` in titles).
 - Show the user the list of pages you found and ask them to confirm or refine the set before reading them in detail.
+@@endif@@
+@@if plane@@
+- Search the Plane project **broadly** — across all programmes / projects you can reach, not just the current programme. Look for pages under research writeups, retrospective notes, post-iteration reviews, and any other project's Knowledge Base (or with `research`, `retrospective`, `lessons-learned` in titles).
+- Show the user the list of pages you found and ask them to confirm or refine the set before reading them in detail.
+@@endif@@
 - In copy-paste mode: ask the user to paste past writeups or research summaries on the topic.
 
 # draft
@@ -47,8 +63,14 @@ Output as markdown with these sections:
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Prior-knowledge/{{topic}}`. Confirm the page is created and show the link.
 - In copy-paste mode: return the markdown and the user will file it by hand using the path above.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Prior-knowledge/{{topic}}`. Confirm the page is created and show the link.
+- In copy-paste mode: return the markdown for pasting and the user will file the page by hand using the path above.
+@@endif@@
 
 # tips
 

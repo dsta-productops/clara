@@ -2,7 +2,7 @@
   "name": "clara",
   "version": "0.1.0",
   "private": true,
-  "description": "Confluence Learning & AI Research Assistant — an internal ProductOps tool that turns Confluence documentation into structured Research artefacts.",
+  "description": "CLARA (from the Latin clarus, 'clear') — an internal ProductOps tool that turns a programme's Plane knowledge base into structured Research artefacts.",
   "type": "module",
   "scripts": {
     "build": "tsx build/build.ts",

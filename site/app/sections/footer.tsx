@@ -3,7 +3,10 @@ import { Text } from "@/components/ui/text";
 import { links } from "@/content/links";
 import { ArrowUpRight } from "lucide-react";
 
-const footerLinks = [{ label: "Source repo", href: links.repo }];
+const footerLinks = [
+  { label: "CLARA for Plane", href: links.plane },
+  { label: "CLARA for Confluence", href: links.confluence },
+];
 
 export function Footer() {
   return (
@@ -15,7 +18,7 @@ export function Footer() {
               CLARA
             </Text>
             <Text size="sm" variant="muted" className="leading-relaxed">
-              Confluence Learning &amp; AI Research Assistant. An internal
+              Named for the Latin <em>clarus</em>, &ldquo;clear.&rdquo; An internal
               ProductOps tool for DSTA programme teams &mdash; cited research
               artefacts across Research, Design, and Test phases, drafted from
               the knowledge base they already own.

@@ -8,14 +8,34 @@ expectedOutput: "Markdown storyboard script: beat-by-beat panels with what to sh
 inputsFrom:
   - operational-scenario-generator
   - capability-spec-generator
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Operational scenario this storyboard depicts"
+@@if confluence@@
       description: "Page under `Knowledge Base/{{track}}/Operational-scenarios/*`. Falls back to `Knowledge Base/Programme-wide/Operational-scenarios/*` when no track-level version exists. Ask the user which scenario if multiple."
+@@endif@@
+@@if plane@@
+      description: "Page under `Knowledge Base/{{track}}/Operational-scenarios/*`. Falls back to `Knowledge Base/Programme-wide/Operational-scenarios/*` when no track-level version exists. Ask the user which scenario if multiple."
+@@endif@@
     - what: "Capability spec for the capability being shown (optional)"
+@@if confluence@@
       description: "Page under `Knowledge Base/{{track}}/Capability-specs/*` or `Knowledge Base/Programme-wide/Capability-specs/*`. Anchors the storyboard to the actual requirements."
+@@endif@@
+@@if plane@@
+      description: "Page under `Knowledge Base/{{track}}/Capability-specs/*` or `Knowledge Base/Programme-wide/Capability-specs/*`. Anchors the storyboard to the actual requirements."
+@@endif@@
     - what: "Persona depicted in the storyboard (optional)"
+@@if confluence@@
       description: "Page under `Knowledge Base/{{track}}/Personas/*` or `Knowledge Base/Programme-wide/Personas/*`. The operator whose actions the storyboard shows — anchors the protagonist's vocabulary, context, and constraints."
+@@endif@@
+@@if plane@@
+      description: "Page under `Knowledge Base/{{track}}/Personas/*` or `Knowledge Base/Programme-wide/Personas/*`. The operator whose actions the storyboard shows — anchors the protagonist's vocabulary, context, and constraints."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Capability-storyboards/{{storyboard-title}}"
 visibility: "public"
 status: "ready"
@@ -71,8 +91,14 @@ Output as markdown:
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Capability-storyboards/{{storyboard-title}}`. Link to the operational scenario page and the capability spec (if used).
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Capability-storyboards/{{storyboard-title}}`. Link the page to the operational scenario page and the capability spec (if used).
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

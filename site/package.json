@@ -2,7 +2,7 @@
   "name": "clara-site",
   "version": "0.1.0",
   "private": true,
-  "description": "Marketing site for CLARA — Confluence Learning & AI Research Assistant.",
+  "description": "Marketing site for CLARA — named for the Latin clarus, 'clear'.",
   "type": "module",
   "scripts": {
     "dev": "next dev",

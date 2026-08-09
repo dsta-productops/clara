@@ -7,18 +7,48 @@ task: "draft an operational scenario from operator research and capability brief
 expectedOutput: "A full operational scenario covering operator, mission context, environment, sequence, decisions, success/failure modes, and capability impact."
 inputsFrom:
   - research-synthesiser
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Operator research — interviews, field/exercise observations, workshop outputs"
+@@if confluence@@
       description: "Pages under *Interviews*, *Exercises*, *Field notes*, *Workshops* (or with 'interview', 'observation', 'exercise', 'field-notes', 'workshop' in titles). Restrict to this programme's space."
+@@endif@@
+@@if plane@@
+      description: "Field-note pages under the `Field-notes` node (or pages with 'interview', 'observation', 'exercise', 'field-notes', 'workshop' in titles). Restrict to this programme's Plane project."
+@@endif@@
     - what: "Capability brief or statement of operational need"
+@@if confluence@@
       description: "Pages under *Briefs*, *Capability*, *Mission* (or with 'capability-brief', 'operational-need', 'mission-statement' in titles)."
+@@endif@@
+@@if plane@@
+      description: "Pages under *Briefs*, *Capability*, *Mission* (or with 'capability-brief', 'operational-need', 'mission-statement' in titles)."
+@@endif@@
     - what: "Doctrinal or procedural references the operators work from (optional)"
+@@if confluence@@
       description: "Pages under *Doctrine*, *Procedures*, *Standards* (or with 'doctrine', 'procedure', 'TTP' in titles)."
+@@endif@@
+@@if plane@@
+      description: "Pages under *Doctrine*, *Procedures*, *Standards* (or with 'doctrine', 'procedure', 'TTP' in titles)."
+@@endif@@
     - what: "Themes (optional)"
+@@if confluence@@
       description: "Page at Themes section of `Knowledge Base/{{track}}/Research-synthesis`."
+@@endif@@
+@@if plane@@
+      description: "Themes section of the `Knowledge Base/{{track}}/Research-synthesis` page."
+@@endif@@
     - what: "Friction points (optional)"
+@@if confluence@@
       description: "Page at Friction-points section of `Knowledge Base/{{track}}/Research-synthesis`. The failure-modes section draws on this."
+@@endif@@
+@@if plane@@
+      description: "Friction-points section of the `Knowledge Base/{{track}}/Research-synthesis` page. The failure-modes section draws on this."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Operational scenarios/{{scenario-title}}"
 visibility: "public"
 status: "ready"
@@ -34,12 +64,23 @@ Use this prompt to draft an operational scenario from operator research and a ca
 
 # inputs
 
+@@if confluence@@
 - Search the programme's space for operator research — pages under *Interviews*, *Exercises*, *Field notes*, *Workshops* (or with `interview`, `observation`, `exercise`, `field-notes`, `workshop` in titles).
 - Find the capability brief or statement of operational need — under *Briefs*, *Capability*, *Mission* (or with `capability-brief`, `operational-need`, `mission-statement` in titles).
+@@endif@@
+@@if plane@@
+- Search the programme's Plane project for operator research — field-note pages under the `Field-notes` node (or pages with `interview`, `observation`, `exercise`, `field-notes`, `workshop` in titles).
+- Find the capability brief or statement of operational need — pages under *Briefs*, *Capability*, *Mission* (or with `capability-brief`, `operational-need`, `mission-statement` in titles).
+@@endif@@
 - Optionally read doctrinal or procedural references the operators work from — under *Doctrine*, *Procedures*, *Standards* (or with `doctrine`, `procedure`, `TTP` in titles).
 - Read the Themes and Friction-points sections of `Knowledge Base/{{track}}/Research-synthesis` if available. The failure-modes section draws on the friction points.
 - Show the user what you found and ask them to confirm or refine before reading in detail.
+@@if confluence@@
 - In copy-paste mode: ask for the operator research (mark sessions / observations with their source) plus the Themes and Friction-points sections of the Research-synthesis page if available.
+@@endif@@
+@@if plane@@
+- In copy-paste mode: ask for the operator research (mark sessions / observations with their source) plus the Themes and Friction-points sections of the Research-synthesis page if available.
+@@endif@@
 
 # draft
 
@@ -85,8 +126,14 @@ If the research doesn't support a section, leave it blank or flag as an open que
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Operational scenarios/{{scenario-title}}`. Link to source research pages.
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Operational scenarios/{{scenario-title}}`. Link the page to its source research pages.
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

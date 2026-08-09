@@ -10,14 +10,24 @@ inputsFrom:
   - operational-scenario-generator
   - capability-spec-generator
   - research-synthesiser
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Relevant artefacts"
       description: "The artefact being tested. For digital tests: a PRD under `Knowledge Base/{{track}}/PRDs/*` (or programme-wide). For engineering tests: the pair of `Knowledge Base/{{track}}/Operational-scenarios/*` + `Knowledge Base/{{track}}/Capability-specs/*`. Ask the user which artefact (or pair) the test is for."
     - what: "Success criteria"
       description: "Success-criteria section of `Knowledge Base/{{track}}/Research-synthesis` (fall back to `Knowledge Base/Programme-wide/Research-synthesis`). These are what the scenarios must exercise."
     - what: "Field notes for scenario seeding (optional)"
+@@if confluence@@
       description: "Pages under `Knowledge Base/{{track}}/Field-notes (* )/*`. Useful for grounding scenarios in observed alert content, edge cases, and ambiguity. Reference field-note IDs in the scenarios so readers can trace back."
+@@endif@@
+@@if plane@@
+      description: "Field-note pages under the `Field-notes` node (`Knowledge Base/{{track}}/Field-notes/*`). Useful for grounding scenarios in observed alert content, edge cases, and ambiguity. Reference field-note IDs in the scenarios so readers can trace back."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Test-plans/{{test-name}}"
 visibility: "public"
 status: "ready"
@@ -36,8 +46,14 @@ Use this prompt to draft a complete test plan — including scenarios — in one
 
 # inputs
 
+@@if confluence@@
 - Identify the artefact being tested. For digital: a PRD page. For engineering: an operational-scenario + capability-spec pair. Confirm the path(s) with the user before reading in detail.
 - Read the Success-criteria section of the relevant Research-synthesis page (track-level, fall back to programme-wide).
+@@endif@@
+@@if plane@@
+- Identify the artefact being tested. For digital: a PRD page. For engineering: an operational-scenario + capability-spec pair. Confirm the path(s) with the user before reading in detail.
+- Read the Success-criteria section of the relevant Research-synthesis page (track-level, fall back to programme-wide).
+@@endif@@
 - Optionally scan field notes for material that scenarios can be seeded from — anonymised alert content, ambiguity that operators experienced, recurring edge cases. Reference the field-note IDs in the scenarios you write.
 - Show the user what you found and confirm test type, test focus, and constraints before drafting. If the user didn't name a focus, restate the success criteria you found and confirm "all of these" is the intent.
 - In copy-paste mode: ask the user for the artefact, success criteria, test type, test focus, and constraints in turn.
@@ -112,8 +128,14 @@ Rules:
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Test-plans/{{test-name}}`. Link to the artefact being tested (PRD or operational-scenario + capability-spec) and the Research-synthesis page the success criteria come from.
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Test-plans/{{test-name}}`. Link the page to the artefact being tested (PRD or operational-scenario + capability-spec) and the Research-synthesis page the success criteria come from.
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

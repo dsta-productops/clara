@@ -7,17 +7,17 @@ const steps = [
   {
     icon: BookOpen,
     title: "Read",
-    body: "CLARA traverses your programme's Confluence space via MCP and reads the source pages. She doesn't search the web; she doesn't invent context. The corpus is the boundary.",
+    body: "CLARA traverses your programme's knowledge base via MCP and reads the source items. She doesn't search the web; she doesn't invent context. The corpus is the boundary.",
   },
   {
     icon: Quote,
     title: "Draft",
-    body: "Every finding points to the source page it came from. If the evidence is thin, CLARA flags the gap and asks before continuing.",
+    body: "Every finding points to the exact source it came from. If the evidence is thin, CLARA flags the gap and asks before continuing.",
   },
   {
     icon: FilePlus,
     title: "File",
-    body: "Artefacts file back into Confluence under a disciplined path. CLARA creates the hierarchy top-down on first use — no manual folder setup, no improvised locations.",
+    body: "Artefacts file back into your knowledge base under a disciplined path. CLARA creates the hierarchy top-down on first use — no manual folder setup, no improvised locations.",
   },
 ];
 

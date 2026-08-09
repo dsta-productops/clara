@@ -2,17 +2,33 @@
 
 Every artefact in the Knowledge Base lives at one of two scopes:
 
+@@if confluence@@
 - **Programme-wide** — umbrella artefacts that apply across all tracks in a programme. Filed under `Knowledge Base/Programme-wide/`.
 - **Track-level** — artefacts specific to a single track within the programme. Filed under `Knowledge Base/{{track}}/`.
+@@endif@@
+@@if plane@@
+- **Programme-wide** — umbrella artefacts that apply across all tracks in a programme. Nested under the `Knowledge Base / Programme-wide` node.
+- **Track-level** — artefacts specific to a single track within the programme. Nested under the `Knowledge Base / {{track}}` node.
+@@endif@@
 
+@@if confluence@@
 When a downstream artefact needs upstream input (e.g. a journey-map-drafter needs a persona), search **both** scopes:
+@@endif@@
+@@if plane@@
+When a downstream artefact needs upstream input (e.g. a journey-map-drafter needs a persona), search **both** scopes — list the children of the artefact-type node under each track:
+@@endif@@
 
 ```
 Knowledge Base / {{track}} / <artefact-type> / *
 Knowledge Base / Programme-wide / <artefact-type> / *
 ```
 
+@@if confluence@@
 When the same artefact-type exists in both locations, the **track-level version takes precedence**. The programme-wide version is the fallback.
+@@endif@@
+@@if plane@@
+Resolve each artefact-type node by walking the parent chain, then list its child pages (`list_pages` filtered by `parent_id`). Where the project applies a track label, the same two-scope search can be expressed as a query filtering on the track and `Programme-wide` scopes. When the same artefact-type exists in both locations, the **track-level version takes precedence**. The programme-wide version is the fallback.
+@@endif@@
 
 The fallback is **visible**, not silent. Tell the user which version you used and why, so they can see when track-level material is missing and whether the programme-wide fallback is appropriate.
 

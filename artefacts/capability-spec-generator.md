@@ -7,14 +7,34 @@ task: "derive measurable capability requirements from an operational scenario"
 expectedOutput: "Markdown capability spec with functional requirements, performance thresholds, environmental constraints, and traceability back to the scenario."
 inputsFrom:
   - operational-scenario-generator
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Operational scenario for this capability"
+@@if confluence@@
       description: "Page under `Knowledge Base/{{track}}/Operational scenarios/*`. Ask the user which scenario if multiple."
+@@endif@@
+@@if plane@@
+      description: "Page under `Knowledge Base/{{track}}/Operational scenarios/*`. Ask the user which scenario if multiple."
+@@endif@@
     - what: "Capability brief or statement of operational need"
+@@if confluence@@
       description: "Pages under *Briefs*, *Capability*, *Mission* (or with 'capability-brief', 'operational-need', 'mission-statement' in titles)."
+@@endif@@
+@@if plane@@
+      description: "Pages under *Briefs*, *Capability*, *Mission* (or with 'capability-brief', 'operational-need', 'mission-statement' in titles)."
+@@endif@@
     - what: "Known constraints (optional) — regulatory, integration, schedule, platform"
+@@if confluence@@
       description: "Pages under *Constraints*, *Compliance*, *Architecture* (or with 'constraints', 'regulatory', 'integration' in titles)."
+@@endif@@
+@@if plane@@
+      description: "Pages under *Constraints*, *Compliance*, *Architecture* (or with 'constraints', 'regulatory', 'integration' in titles)."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Capability specs/{{capability-name}}"
 visibility: "public"
 status: "ready"
@@ -32,8 +52,14 @@ Use this prompt to turn an operational scenario into a structured capability spe
 # inputs
 
 - Read the operational scenario at the path the user named (fall back to `Knowledge Base/Programme-wide/Operational scenarios/*` if no track-level version exists).
+@@if confluence@@
 - Find the capability brief or statement of operational need — under *Briefs*, *Capability*, *Mission* (or with `capability-brief`, `operational-need`, `mission-statement` in titles).
 - Look for known constraints — under *Constraints*, *Compliance*, *Architecture* (or with `constraints`, `regulatory`, `integration` in titles).
+@@endif@@
+@@if plane@@
+- Find the capability brief or statement of operational need — pages under *Briefs*, *Capability*, *Mission* (or with `capability-brief`, `operational-need`, `mission-statement` in titles).
+- Look for known constraints — pages under *Constraints*, *Compliance*, *Architecture* (or with `constraints`, `regulatory`, `integration` in titles).
+@@endif@@
 - Show the user what you found and ask them to confirm or refine before reading in detail.
 - In copy-paste mode: ask for the operational scenario, the capability brief, and any known measurable thresholds (accuracy, latency, recall, classification, etc.).
 
@@ -79,8 +105,14 @@ If the scenario doesn't justify a requirement, leave it out and flag under Open 
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Capability specs/{{capability-name}}`. Link to the operational scenario page.
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Capability specs/{{capability-name}}`. Link the page to the operational scenario page.
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

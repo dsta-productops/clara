@@ -7,7 +7,12 @@ task: "generate a field-ready interview guide that surfaces the data the team ne
 expectedOutput: "A structured interview guide with warmup, core, probe, and wrap-up sections — each question annotated with what to listen for."
 inputsFrom:
   - prior-knowledge-summariser
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Prior-knowledge summary on the topic (optional)"
       description: "Look in `Knowledge Base/{{track}}/Prior-knowledge/*` and `Knowledge Base/Programme-wide/Prior-knowledge/*`. Use the prior-knowledge summary to avoid asking questions the team already has answers to, and to pre-load the LLM on context."
@@ -79,8 +84,14 @@ Self-check before using the guide:
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Interview-guides/{{topic}}` with the guide. Confirm the page is created and show the link.
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Interview-guides/{{topic}}` with the guide. Confirm the page is created and show the link.
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

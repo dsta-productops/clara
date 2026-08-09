@@ -7,12 +7,27 @@ task: "map an end-to-end mission thread for the operational task a capability su
 expectedOutput: "Markdown mission thread: actors, systems, data flow, decision points, dependencies, and failure modes across the full task."
 inputsFrom:
   - operational-scenario-generator
+@@if confluence@@
 confluenceContext:
+@@endif@@
+@@if plane@@
+planeContext:
+@@endif@@
   inputs:
     - what: "Operational scenario for this capability"
+@@if confluence@@
       description: "Page under `Knowledge Base/{{track}}/Operational scenarios/*`. Ask the user which scenario."
+@@endif@@
+@@if plane@@
+      description: "Page under `Knowledge Base/{{track}}/Operational scenarios/*`. Ask the user which scenario."
+@@endif@@
     - what: "System context — systems, platforms, comms involved"
+@@if confluence@@
       description: "Pages under *Systems*, *Architecture*, *Platforms*, *Communications* (or with 'system', 'architecture', 'platform', 'comms' in titles). Optional but useful."
+@@endif@@
+@@if plane@@
+      description: "Pages under *Systems*, *Architecture*, *Platforms*, *Communications* (or with 'system', 'architecture', 'platform', 'comms' in titles). Optional but useful."
+@@endif@@
   outputPathTemplate: "Knowledge Base/{{track}}/Mission threads/{{mission-task}}"
 visibility: "public"
 status: "ready"
@@ -30,7 +45,12 @@ Use this prompt to map the end-to-end mission thread — the full chain of actor
 # inputs
 
 - Read the operational scenario at the path the user named (`Knowledge Base/{{track}}/Operational scenarios/*` with fallback to programme-wide).
+@@if confluence@@
 - Search the programme's space for system-context pages — under *Systems*, *Architecture*, *Platforms*, *Communications* (or with `system`, `architecture`, `platform`, `comms` in titles). Optional but useful.
+@@endif@@
+@@if plane@@
+- Search the programme's Plane project for system-context pages — under *Systems*, *Architecture*, *Platforms*, *Communications* (or with `system`, `architecture`, `platform`, `comms` in titles). Optional but useful.
+@@endif@@
 - Show the user what you found and ask them to confirm or refine before reading in detail.
 - In copy-paste mode: ask for the operational scenario and a description of the systems / sensors / data flows the mission task touches.
 
@@ -71,8 +91,14 @@ If the scenario doesn't cover a step, leave it blank and flag under "Open questi
 
 # filing
 
+@@if confluence@@
 - Create a new page at `Knowledge Base/{{track}}/Mission threads/{{mission-task}}`. Link to the operational scenario page.
 - In copy-paste mode: return the markdown and the user will file it manually.
+@@endif@@
+@@if plane@@
+- Create a new page at `Knowledge Base/{{track}}/Mission threads/{{mission-task}}`. Link the page to the operational scenario page.
+- In copy-paste mode: return the markdown for pasting and the user will file the page manually.
+@@endif@@
 
 # tips
 

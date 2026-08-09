@@ -1,48 +1,50 @@
-# Set up the SKYPROTECT demo Knowledge Base in Confluence
+# Set up the SKYPROTECT demo Knowledge Base in Plane
 
 ## Who is reading this
 
-You are an AI assistant with Confluence MCP tools. Your task is to populate a Confluence space named **`SKYPROTECT`** with a demo Knowledge Base for a fictional drone-defence C3 programme. The space already exists; do not create it.
+You are an AI assistant with Plane MCP tools. Your task is to populate a Plane project named **`SKYPROTECT`** (identifier **`SKYPR`**) with a demo Knowledge Base for a fictional drone-defence C3 programme. The project already exists; do not create it.
 
-The user is testing a ProductOps Co-pilot portal that produces structured research artefacts and files them into Confluence. SKYPROTECT is being used as test data.
+The user is testing a ProductOps Co-pilot portal that produces structured research artefacts and files them into Plane. SKYPROTECT is being used as test data.
+
+Every node in the Knowledge Base — tracks, artefact-type groupings, and leaf artefacts — is a **page**. Hierarchy is expressed by the `parent_id` field: each page's `parent_id` is the page one level above it. Artefact content lives in the page **description**.
 
 ## Filing discipline (apply to every page below)
 
-1. **Space check.** Verify the `SKYPROTECT` space exists. If it does not, stop and report — do not create the space yourself.
-2. **Hierarchy check.** Before creating any artefact page, verify every parent page in its path exists. If a parent is missing, create it as a placeholder first (top-down), with title equal to the path-level name and body equal to *"Placeholder — created to support filing structure."*
-3. **No silent fallbacks.** If a path cannot be created (permissions, missing space, anything), stop and report. Never file at the space root or anywhere else without explicit confirmation.
-4. **Apply the specified labels** on each page where given.
-5. **Create pages in the order listed below** — that order respects the hierarchy.
-6. **Render citations as Confluence page links.** Inside the artefact bodies (synthesis, persona, journey, PRD), every reference to a session ID (`S01`-`S16`), a walk-through (`WT01`-`WT04`), or a field observation (`Field Alpha 1`, `Field Alpha 2`, `Field Bravo 1`, `Field Bravo 2`) must be rendered as a Confluence link to the corresponding field-note page. Keep the short ID as the visible link text — *e.g.* `*evidence: S01, S03, S05*` becomes three inline links labelled `S01`, `S03`, `S05` pointing at their respective pages. Apply this rule when creating *any* artefact below — the page titles to link to are listed in the hierarchy and defined in pages 25-48.
+1. **Project check.** Verify the `SKYPROTECT` project (identifier `SKYPR`) exists. If it does not, stop and report — do not create the project yourself.
+2. **Hierarchy check.** Before creating any artefact page, verify every parent page in its path exists. If a parent is missing, create it as a placeholder first (top-down), with name equal to the path-level name, its `parent_id` set to the page above it, and description equal to *"Placeholder — created to support filing structure."*
+3. **No silent fallbacks.** If a page cannot be created (permissions, missing project, anything), stop and report. Never file at the project root (a page with no parent under Knowledge Base) or anywhere else without explicit confirmation.
+4. **Labels are optional.** Plane supports labels, but the demo's hierarchy is carried entirely by the parent chain, not by labels. You may optionally apply Plane labels at creation time (e.g. `persona`, `field-note`) if the user wants them for filtering, but no label is required and none is load-bearing.
+5. **Create pages in the order listed below** — that order encodes the hierarchy, so every parent is created before its children.
+6. **Cite field notes by their native Plane identifier.** Inside the artefact bodies (synthesis, persona, journey, PRD), every reference to an interview, walk-through, or field observation must point to the corresponding field-note page. Plane assigns each page a native identifier (e.g. `SKYPR-42`) **on creation**, so you cannot know the identifiers in advance — they depend on creation order. When you create the field-note pages (below), record the identifier Plane returns for each. Then, when you create an artefact that cites a note, render the citation as a link to that note's page, keeping the short human label (the note's own reference, e.g. `S01`, `WT02`, `Field Alpha 1`) as the visible link text. Do not invent fixed `SKYPR-N` numbers. The notes to link to are defined in pages 25-48.
 
 ## Target hierarchy
 
-Everything sits inside the `SKYPROTECT` space, under a single top-level page named **Knowledge Base**:
+Everything sits inside the `SKYPROTECT` project, as a tree of pages under a single top-level page named **Knowledge Base**. Each node below is a page whose `parent_id` is the node above it:
 
 ```
-SKYPROTECT (space)
+SKYPROTECT (project, identifier SKYPR)
 └── Knowledge Base/
     ├── Programme-wide/
-    │   ├── Prior-knowledge (Programme-wide)/
+    │   ├── Prior-knowledge/
     │   │   └── Counter-drone-systems
-    │   ├── Interview-guides (Programme-wide)/
-    │   ├── Field-notes (Programme-wide)/
-    │   │   ├── _Template — Field note (Programme-wide)
+    │   ├── Interview-guides/
+    │   ├── Field-notes/
+    │   │   ├── _Template — Field note
     │   │   ├── S13 — Air-defence commander interview
     │   │   ├── S14 — Air-defence commander interview
     │   │   ├── S15 — Air-defence commander interview
     │   │   └── S16 — Air-defence commander interview
-    │   ├── Research-synthesis (Programme-wide)
-    │   ├── Personas (Programme-wide)/
+    │   ├── Research-synthesis
+    │   ├── Personas/
     │   │   └── Air-defence-commander
-    │   ├── Journeys (Programme-wide)/
-    │   ├── PRDs (Programme-wide)/
-    │   └── Test-plans (Programme-wide)/
+    │   ├── Journeys/
+    │   ├── PRDs/
+    │   └── Test-plans/
     └── Operator-console/
-        ├── Prior-knowledge (Operator-console)/
-        ├── Interview-guides (Operator-console)/
-        ├── Field-notes (Operator-console)/
-        │   ├── _Template — Field note (Operator-console)
+        ├── Prior-knowledge/
+        ├── Interview-guides/
+        ├── Field-notes/
+        │   ├── _Template — Field note
         │   ├── S01 — Console operator interview
         │   ├── S02 — Console operator interview
         │   ├── S03 — Console operator interview
@@ -63,18 +65,18 @@ SKYPROTECT (space)
         │   ├── Field Alpha 2 — Site Alpha night shift
         │   ├── Field Bravo 1 — Site Bravo day shift
         │   └── Field Bravo 2 — Site Bravo night shift
-        ├── Research-synthesis (Operator-console)
-        ├── Personas (Operator-console)/
+        ├── Research-synthesis
+        ├── Personas/
         │   └── Console-operator
-        ├── Journeys (Operator-console)/
+        ├── Journeys/
         │   └── Engage-incoming-threat
-        ├── PRDs (Operator-console)/
+        ├── PRDs/
         │   └── Console-v1
-        └── Test-plans (Operator-console)/
+        └── Test-plans/
             └── Console-v1-usability-test
 ```
 
-Artefact-type folder titles carry the parent-track suffix in parentheses. This is the canonical filing convention from [`conventions/confluence-mcp.md`](../conventions/confluence-mcp.md) — Confluence Cloud enforces space-wide unique page titles, so two `Personas` folders in the same space would collide. The suffix makes disambiguation predictable. Track folders and leaf artefact pages do not take the suffix.
+Artefact-type groupings (`Personas`, `Journeys`, `Field-notes`, etc.) are titled plainly, with no track suffix. Plane does not enforce unique titles, so two `Personas` pages in the same project are perfectly fine — they are disambiguated by their parent chain (`Programme-wide / Personas` versus `Operator-console / Personas`). Every level, including these groupings and each leaf artefact, is a page nested under its parent.
 
 `Programme-wide` and `Operator-console` are **tracks**. Programme-wide holds umbrella artefacts that apply across all tracks; the Operator-console track holds artefacts specific to that slice of the work. SKYPROTECT is a digital programme — there are no engineering-track artefacts in this demo.
 
@@ -94,8 +96,8 @@ Use these names consistently across all pages so the demo coheres internally.
 
 - **Path:** `SKYPROTECT > Knowledge Base`
 - **Title:** `Knowledge Base`
-- **Labels:** none
-- **Body:**
+- **Parent:** none (top-level page in the project)
+- **Description:**
 
 ```
 This is the SKYPROTECT programme's Knowledge Base. All AI-generated research artefacts file under here, organised by track.
@@ -115,8 +117,8 @@ Filing convention: `Knowledge Base / <track> / <artefact-type> / <name>`.
 
 - **Path:** `Knowledge Base > Programme-wide`
 - **Title:** `Programme-wide`
-- **Labels:** none
-- **Body:**
+- **Parent:** `Knowledge Base`
+- **Description:**
 
 ```
 Programme-wide artefacts — personas, prior-knowledge summaries, and research synthesis that apply across all tracks in SKYPROTECT. Track-level artefacts may inherit from these as foundation.
@@ -124,21 +126,21 @@ Programme-wide artefacts — personas, prior-knowledge summaries, and research s
 
 ---
 
-### Page 3 — `Prior-knowledge (Programme-wide)` (folder placeholder under Programme-wide)
+### Page 3 — `Prior-knowledge` (grouping placeholder under Programme-wide)
 
-- **Path:** `Programme-wide > Prior-knowledge (Programme-wide)`
-- **Title:** `Prior-knowledge (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > Prior-knowledge`
+- **Title:** `Prior-knowledge`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 4 — `Counter-drone-systems` (prior-knowledge artefact)
 
-- **Path:** `Programme-wide > Prior-knowledge (Programme-wide) > Counter-drone-systems`
+- **Path:** `Programme-wide > Prior-knowledge > Counter-drone-systems`
 - **Title:** `Counter-drone-systems`
-- **Labels:** `research`, `prior-knowledge`
-- **Body:**
+- **Parent:** `Prior-knowledge`
+- **Description:**
 
 ```
 # Counter-drone systems — prior knowledge summary
@@ -165,20 +167,20 @@ A summary of what's already known across past programmes about counter-UAS syste
 
 ## Sources
 
-- SHIELDWATCH after-action report (Confluence: SHIELDWATCH space, "Lessons learned 2023")
-- OWLEYE final synthesis (Confluence: OWLEYE space, "Programme close-out 2024")
-- AEGIS-LITE pilot writeup (Confluence: AEGIS-LITE space, "Pilot report Q3 2024")
-- Internal operator-fatigue study (Confluence: HUMAN-FACTORS space, "Night shift alert load 2024")
+- SHIELDWATCH after-action report (SHIELDWATCH programme KB, "Lessons learned 2023")
+- OWLEYE final synthesis (OWLEYE programme KB, "Programme close-out 2024")
+- AEGIS-LITE pilot writeup (AEGIS-LITE programme KB, "Pilot report Q3 2024")
+- Internal operator-fatigue study (Human-Factors programme KB, "Night shift alert load 2024")
 ```
 
 ---
 
-### Page 5 — `Research-synthesis (Programme-wide)` (programme-wide synthesis)
+### Page 5 — `Research-synthesis` (programme-wide synthesis)
 
-- **Path:** `Programme-wide > Research-synthesis (Programme-wide)`
-- **Title:** `Research-synthesis (Programme-wide)`
-- **Labels:** `research`, `synthesis`
-- **Body:**
+- **Path:** `Programme-wide > Research-synthesis`
+- **Title:** `Research-synthesis`
+- **Parent:** `Programme-wide`
+- **Description:**
 
 ```
 # Research synthesis — Programme-wide
@@ -236,21 +238,21 @@ A summary of what's already known across past programmes about counter-UAS syste
 
 ---
 
-### Page 6 — `Personas (Programme-wide)` (folder placeholder under Programme-wide)
+### Page 6 — `Personas` (grouping placeholder under Programme-wide)
 
-- **Path:** `Programme-wide > Personas (Programme-wide)`
-- **Title:** `Personas (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > Personas`
+- **Title:** `Personas`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 7 — `Air-defence-commander` (programme-wide persona)
 
-- **Path:** `Programme-wide > Personas (Programme-wide) > Air-defence-commander`
+- **Path:** `Programme-wide > Personas > Air-defence-commander`
 - **Title:** `Air-defence-commander`
-- **Labels:** `research`, `artefact`, `persona`
-- **Body:**
+- **Parent:** `Personas`
+- **Description:**
 
 ```
 # Air-defence commander
@@ -284,8 +286,8 @@ A summary of what's already known across past programmes about counter-UAS syste
 
 - **Path:** `Knowledge Base > Operator-console`
 - **Title:** `Operator-console`
-- **Labels:** none
-- **Body:**
+- **Parent:** `Knowledge Base`
+- **Description:**
 
 ```
 The Operator-console track. The operator-facing console is the primary user-facing artefact of SKYPROTECT — the unified screen that replaces the previous three-vendor toolchain.
@@ -295,12 +297,12 @@ Artefacts in this track are scoped to operators' use of the console. Programme-w
 
 ---
 
-### Page 9 — `Research-synthesis (Operator-console)` (track-level)
+### Page 9 — `Research-synthesis` (track-level)
 
-- **Path:** `Operator-console > Research-synthesis (Operator-console)`
-- **Title:** `Research-synthesis (Operator-console)`
-- **Labels:** `research`, `synthesis`
-- **Body:**
+- **Path:** `Operator-console > Research-synthesis`
+- **Title:** `Research-synthesis`
+- **Parent:** `Operator-console`
+- **Description:**
 
 ```
 # Research synthesis — Operator-console track
@@ -353,21 +355,21 @@ Artefacts in this track are scoped to operators' use of the console. Programme-w
 
 ---
 
-### Page 10 — `Personas (Operator-console)` (folder placeholder under Operator-console)
+### Page 10 — `Personas` (grouping placeholder under Operator-console)
 
-- **Path:** `Operator-console > Personas (Operator-console)`
-- **Title:** `Personas (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Operator-console > Personas`
+- **Title:** `Personas`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 11 — `Console-operator` (track-specific persona)
 
-- **Path:** `Operator-console > Personas (Operator-console) > Console-operator`
+- **Path:** `Operator-console > Personas > Console-operator`
 - **Title:** `Console-operator`
-- **Labels:** `research`, `artefact`, `persona`
-- **Body:**
+- **Parent:** `Personas`
+- **Description:**
 
 ```
 # Console operator
@@ -398,21 +400,21 @@ Artefacts in this track are scoped to operators' use of the console. Programme-w
 
 ---
 
-### Page 12 — `Journeys (Operator-console)` (folder placeholder under Operator-console)
+### Page 12 — `Journeys` (grouping placeholder under Operator-console)
 
-- **Path:** `Operator-console > Journeys (Operator-console)`
-- **Title:** `Journeys (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Operator-console > Journeys`
+- **Title:** `Journeys`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 13 — `Engage-incoming-threat` (journey map)
 
-- **Path:** `Operator-console > Journeys (Operator-console) > Engage-incoming-threat`
+- **Path:** `Operator-console > Journeys > Engage-incoming-threat`
 - **Title:** `Engage-incoming-threat`
-- **Labels:** `research`, `artefact`, `journey-map`
-- **Body:**
+- **Parent:** `Journeys`
+- **Description:**
 
 ```
 # Journey map — Engage incoming threat (current state)
@@ -492,21 +494,21 @@ Artefacts in this track are scoped to operators' use of the console. Programme-w
 
 ---
 
-### Page 14 — `PRDs (Operator-console)` (folder placeholder under Operator-console)
+### Page 14 — `PRDs` (grouping placeholder under Operator-console)
 
-- **Path:** `Operator-console > PRDs (Operator-console)`
-- **Title:** `PRDs (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Operator-console > PRDs`
+- **Title:** `PRDs`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 15 — `Console-v1` (PRD)
 
-- **Path:** `Operator-console > PRDs (Operator-console) > Console-v1`
+- **Path:** `Operator-console > PRDs > Console-v1`
 - **Title:** `Console-v1`
-- **Labels:** `research`, `artefact`, `prd`
-- **Body:**
+- **Parent:** `PRDs`
+- **Description:**
 
 ```
 # PRD — Console v1
@@ -517,9 +519,9 @@ Air-defence operators using the current three-vendor toolchain cannot complete a
 
 ## 2. Target users / operators
 
-Primary: **Console operators** (see the track-level persona at `Operator-console / Personas (Operator-console) / Console-operator`).
+Primary: **Console operators** (see the track-level persona at `Operator-console / Personas / Console-operator`).
 
-Secondary: **Air-defence commanders** (see `Programme-wide / Personas (Programme-wide) / Air-defence-commander`) — they consume the acknowledgement workflow but are not the primary console user. A separate commander view will be scoped after Console v1 ships.
+Secondary: **Air-defence commanders** (see `Programme-wide / Personas / Air-defence-commander`) — they consume the acknowledgement workflow but are not the primary console user. A separate commander view will be scoped after Console v1 ships.
 
 ## 3. Success criteria
 
@@ -569,81 +571,79 @@ Secondary: **Air-defence commanders** (see `Programme-wide / Personas (Programme
 
 ---
 
-### Page 16 — `Journeys (Programme-wide)` (folder placeholder under Programme-wide)
+### Page 16 — `Journeys` (grouping placeholder under Programme-wide)
 
-- **Path:** `Programme-wide > Journeys (Programme-wide)`
-- **Title:** `Journeys (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
-
----
-
-### Page 17 — `PRDs (Programme-wide)` (folder placeholder under Programme-wide)
-
-- **Path:** `Programme-wide > PRDs (Programme-wide)`
-- **Title:** `PRDs (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > Journeys`
+- **Title:** `Journeys`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
-### Page 18 — `Interview-guides (Programme-wide)` (folder placeholder under Programme-wide)
+### Page 17 — `PRDs` (grouping placeholder under Programme-wide)
 
-- **Path:** `Programme-wide > Interview-guides (Programme-wide)`
-- **Title:** `Interview-guides (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
-
----
-
-### Page 19 — `Prior-knowledge (Operator-console)` (folder placeholder under Operator-console)
-
-- **Path:** `Operator-console > Prior-knowledge (Operator-console)`
-- **Title:** `Prior-knowledge (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > PRDs`
+- **Title:** `PRDs`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
-### Page 20 — `Interview-guides (Operator-console)` (folder placeholder under Operator-console)
+### Page 18 — `Interview-guides` (grouping placeholder under Programme-wide)
 
-- **Path:** `Operator-console > Interview-guides (Operator-console)`
-- **Title:** `Interview-guides (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
-
----
-
-### Page 21 — `Field-notes (Programme-wide)` (folder placeholder under Programme-wide)
-
-- **Path:** `Programme-wide > Field-notes (Programme-wide)`
-- **Title:** `Field-notes (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > Interview-guides`
+- **Title:** `Interview-guides`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
-### Page 22 — `_Template — Field note (Programme-wide)` (template under Programme-wide field notes)
+### Page 19 — `Prior-knowledge` (grouping placeholder under Operator-console)
 
-- **Path:** `Programme-wide > Field-notes (Programme-wide) > _Template — Field note (Programme-wide)`
-- **Title:** `_Template — Field note (Programme-wide)`
-- **Labels:** none
-- **Body:**
+- **Path:** `Operator-console > Prior-knowledge`
+- **Title:** `Prior-knowledge`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
+
+---
+
+### Page 20 — `Interview-guides` (grouping placeholder under Operator-console)
+
+- **Path:** `Operator-console > Interview-guides`
+- **Title:** `Interview-guides`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
+
+---
+
+### Page 21 — `Field-notes` (grouping placeholder under Programme-wide)
+
+- **Path:** `Programme-wide > Field-notes`
+- **Title:** `Field-notes`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
+
+---
+
+### Page 22 — `_Template — Field note` (template under Programme-wide field notes)
+
+- **Path:** `Programme-wide > Field-notes > _Template — Field note`
+- **Title:** `_Template — Field note`
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
 ## How to use this template
 
-1. **Duplicate this page** into the `Field-notes (Programme-wide)` folder (Confluence: page `⋯` menu → *Copy*).
-2. **Rename your copy** to something memorable — e.g. `Commander-session-2026-05-22`, `Cross-site-handover-observation-2026-05-30`. Use whatever scheme suits you; CLARA reads the body, not the title.
+1. **Create a new page** under the `Field-notes` grouping (set its `parent_id` to `Field-notes`). Copy the structure below into its description.
+2. **Name your copy** something memorable — e.g. `Commander-session-2026-05-22`, `Cross-site-handover-observation-2026-05-30`. Use whatever scheme suits you; CLARA reads the body, not the title.
     - Drop the `_Template — ` prefix.
-    - Drop the `(Programme-wide)` suffix too — leaf field-note pages don't carry the track suffix (only the *folder* does).
-3. **Leave Session ID blank.** CLARA stamps it the first time she processes the note; do not edit this field yourself.
+3. **Cite this note by its Plane identifier.** Plane assigns the page a native identifier (e.g. `SKYPR-42`) on creation — that identifier is how artefacts reference this note. You don't set it; Plane does.
 4. **Fill in the rest.** Participants and User group are optional but useful; Raw notes and Verbatim quotes are the substance.
 5. Delete this *How to use* block before saving — it's guidance for you, not part of the note.
 
 ---
 
-- **Session ID:** (assigned by CLARA — do not edit)
 - **Participants:** e.g. Console operator (x2), Air-defence commander (x1)
 - **User group:** 
 
@@ -662,36 +662,34 @@ _Exact words from participants only. Attribute to role where possible — e.g. C
 
 ---
 
-### Page 23 — `Field-notes (Operator-console)` (folder placeholder under Operator-console)
+### Page 23 — `Field-notes` (grouping placeholder under Operator-console)
 
-- **Path:** `Operator-console > Field-notes (Operator-console)`
-- **Title:** `Field-notes (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Operator-console > Field-notes`
+- **Title:** `Field-notes`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
-### Page 24 — `_Template — Field note (Operator-console)` (template under Operator-console field notes)
+### Page 24 — `_Template — Field note` (template under Operator-console field notes)
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > _Template — Field note (Operator-console)`
-- **Title:** `_Template — Field note (Operator-console)`
-- **Labels:** none
-- **Body:**
+- **Path:** `Operator-console > Field-notes > _Template — Field note`
+- **Title:** `_Template — Field note`
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
 ## How to use this template
 
-1. **Duplicate this page** into the `Field-notes (Operator-console)` folder (Confluence: page `⋯` menu → *Copy*).
-2. **Rename your copy** to something memorable — e.g. `Operator-session-2026-05-22`, `Site-Alpha-night-shift-observation-2026-05-30`. Use whatever scheme suits you; CLARA reads the body, not the title.
+1. **Create a new page** under the `Field-notes` grouping (set its `parent_id` to `Field-notes`). Copy the structure below into its description.
+2. **Name your copy** something memorable — e.g. `Operator-session-2026-05-22`, `Site-Alpha-night-shift-observation-2026-05-30`. Use whatever scheme suits you; CLARA reads the body, not the title.
     - Drop the `_Template — ` prefix.
-    - Drop the `(Operator-console)` suffix too — leaf field-note pages don't carry the track suffix (only the *folder* does).
-3. **Leave Session ID blank.** CLARA stamps it the first time she processes the note; do not edit this field yourself.
+3. **Cite this note by its Plane identifier.** Plane assigns the page a native identifier (e.g. `SKYPR-42`) on creation — that identifier is how artefacts reference this note. You don't set it; Plane does.
 4. **Fill in the rest.** Participants and User group are optional but useful; Raw notes and Verbatim quotes are the substance.
 5. Delete this *How to use* block before saving — it's guidance for you, not part of the note.
 
 ---
 
-- **Session ID:** (assigned by CLARA — do not edit)
 - **Participants:** e.g. Console operator (x2), Air-defence commander (x1)
 - **User group:** 
 
@@ -712,13 +710,12 @@ _Exact words from participants only. Attribute to role where possible — e.g. C
 
 ### Page 25 — `S13 — Air-defence commander interview`
 
-- **Path:** `Programme-wide > Field-notes (Programme-wide) > S13 — Air-defence commander interview`
+- **Path:** `Programme-wide > Field-notes > S13 — Air-defence commander interview`
 - **Title:** `S13 — Air-defence commander interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S13
 - **Participants:** Air-defence commander (x1) — Lt Col, 18 yrs exp
 - **User group:** Commanders (central ops room)
 
@@ -747,13 +744,12 @@ Commander: "If I'm visibly watching their screen they slow down. I've stopped do
 
 ### Page 26 — `S14 — Air-defence commander interview`
 
-- **Path:** `Programme-wide > Field-notes (Programme-wide) > S14 — Air-defence commander interview`
+- **Path:** `Programme-wide > Field-notes > S14 — Air-defence commander interview`
 - **Title:** `S14 — Air-defence commander interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S14
 - **Participants:** Air-defence commander (x1) — Maj, 12 yrs exp
 - **User group:** Commanders (central ops room)
 
@@ -782,13 +778,12 @@ Commander: "I've literally trained myself to count to two before the high-stakes
 
 ### Page 27 — `S15 — Air-defence commander interview`
 
-- **Path:** `Programme-wide > Field-notes (Programme-wide) > S15 — Air-defence commander interview`
+- **Path:** `Programme-wide > Field-notes > S15 — Air-defence commander interview`
 - **Title:** `S15 — Air-defence commander interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S15
 - **Participants:** Air-defence commander (x1) — Lt Col, 22 yrs exp
 - **User group:** Commanders (central ops room)
 
@@ -821,13 +816,12 @@ Commander: "I want to be able to sleep on the call. Right now the only record is
 
 ### Page 28 — `S16 — Air-defence commander interview`
 
-- **Path:** `Programme-wide > Field-notes (Programme-wide) > S16 — Air-defence commander interview`
+- **Path:** `Programme-wide > Field-notes > S16 — Air-defence commander interview`
 - **Title:** `S16 — Air-defence commander interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S16
 - **Participants:** Air-defence commander (x1) — Lt Col, 16 yrs exp
 - **User group:** Commanders (central ops room)
 
@@ -856,13 +850,12 @@ Commander: "I keep my own log on paper because I don't trust the system to recor
 
 ### Page 29 — `S01 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S01 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S01 — Console operator interview`
 - **Title:** `S01 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S01
 - **Participants:** Console operator (x1) — 8 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -891,13 +884,12 @@ Operator: "If radar and RF disagree, I'm just guessing. There's no tool for that
 
 ### Page 30 — `S02 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S02 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S02 — Console operator interview`
 - **Title:** `S02 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S02
 - **Participants:** Console operator (x1) — 6 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -926,13 +918,12 @@ Operator: "The heli-pad gives a return every morning at 0600. I've figured that 
 
 ### Page 31 — `S03 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S03 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S03 — Console operator interview`
 - **Title:** `S03 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S03
 - **Participants:** Console operator (x1) — 10 yrs exp, Site Bravo
 - **User group:** Operators
 
@@ -961,13 +952,12 @@ Operator: "When I know command is on the line I'm slower. I'm choosing my words.
 
 ### Page 32 — `S04 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S04 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S04 — Console operator interview`
 - **Title:** `S04 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S04
 - **Participants:** Console operator (x1) — 5 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -996,13 +986,12 @@ Operator: "Three sensors weakly agreeing is harder to fake than one sensor stron
 
 ### Page 33 — `S05 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S05 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S05 — Console operator interview`
 - **Title:** `S05 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S05
 - **Participants:** Console operator (x1) — 12 yrs exp, Site Bravo
 - **User group:** Operators
 
@@ -1031,13 +1020,12 @@ Operator: "I have a notebook. Heli-pad 0600 return. Tree line at the southeast c
 
 ### Page 34 — `S06 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S06 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S06 — Console operator interview`
 - **Title:** `S06 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S06
 - **Participants:** Console operator (x1) — 7 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -1066,13 +1054,12 @@ Operator: "I'd trust three of them weakly agreeing more than one of them shoutin
 
 ### Page 35 — `S07 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S07 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S07 — Console operator interview`
 - **Title:** `S07 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S07
 - **Participants:** Console operator (x1) — 9 yrs exp, Site Bravo
 - **User group:** Operators
 
@@ -1101,13 +1088,12 @@ Operator: "I go to the camera every time. Every. Time."
 
 ### Page 36 — `S08 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S08 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S08 — Console operator interview`
 - **Title:** `S08 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S08
 - **Participants:** Console operator (x1) — 11 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -1140,13 +1126,12 @@ Operator: "Is the commander listening or not? My screen doesn't know."
 
 ### Page 37 — `S09 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S09 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S09 — Console operator interview`
 - **Title:** `S09 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S09
 - **Participants:** Console operator (x1) — 4 yrs exp, Site Bravo
 - **User group:** Operators
 
@@ -1177,13 +1162,12 @@ Operator: "When I reconstruct, I sound more certain than I was. The log is wrong
 
 ### Page 38 — `S10 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S10 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S10 — Console operator interview`
 - **Title:** `S10 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S10
 - **Participants:** Console operator (x1) — 6 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -1210,13 +1194,12 @@ Operator: "I trust three sensors weakly agreeing more than one shouting. The sho
 
 ### Page 39 — `S11 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S11 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S11 — Console operator interview`
 - **Title:** `S11 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S11
 - **Participants:** Console operator (x1) — 9 yrs exp, Site Bravo
 - **User group:** Operators
 
@@ -1247,13 +1230,12 @@ Operator: "I want to defend the decision later. Right now what I have is what I 
 
 ### Page 40 — `S12 — Console operator interview`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > S12 — Console operator interview`
+- **Path:** `Operator-console > Field-notes > S12 — Console operator interview`
 - **Title:** `S12 — Console operator interview`
-- **Labels:** `research`, `field-note`, `interview`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** S12
 - **Participants:** Console operator (x1) — 5 yrs exp, Site Alpha
 - **User group:** Operators
 
@@ -1278,14 +1260,13 @@ Operator: "By the time the camera has slewed I've already opened two other thing
 
 ### Page 41 — `WT01 — Console paper-prototype walk-through`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > WT01 — Console paper-prototype walk-through`
+- **Path:** `Operator-console > Field-notes > WT01 — Console paper-prototype walk-through`
 - **Title:** `WT01 — Console paper-prototype walk-through`
-- **Labels:** `research`, `field-note`, `walkthrough`
+- **Parent:** `Field-notes`
 
-- **Body:**
+- **Description:**
 
 ```
-- **Session ID:** WT01
 - **Participants:** Console operators (x3)
 - **User group:** Operators
 
@@ -1314,13 +1295,12 @@ Operator (4 yrs): "Maybe a free-text field, but after the decision, not before."
 
 ### Page 42 — `WT02 — Reconciliation view walk-through`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > WT02 — Reconciliation view walk-through`
+- **Path:** `Operator-console > Field-notes > WT02 — Reconciliation view walk-through`
 - **Title:** `WT02 — Reconciliation view walk-through`
-- **Labels:** `research`, `field-note`, `walkthrough`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** WT02
 - **Participants:** Console operators (x4)
 - **User group:** Operators
 
@@ -1351,13 +1331,12 @@ Operator: "Full takeover is fine for the big calls. Don't take over my screen fo
 
 ### Page 43 — `WT03 — Site-context surfacing walk-through`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > WT03 — Site-context surfacing walk-through`
+- **Path:** `Operator-console > Field-notes > WT03 — Site-context surfacing walk-through`
 - **Title:** `WT03 — Site-context surfacing walk-through`
-- **Labels:** `research`, `field-note`, `walkthrough`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** WT03
 - **Participants:** Console operators (x4)
 - **User group:** Operators
 
@@ -1389,13 +1368,12 @@ Operator: "Show me what the operator before me figured out. Don't make me re-fig
 
 ### Page 44 — `WT04 — Commander acknowledgement walk-through`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > WT04 — Commander acknowledgement walk-through`
+- **Path:** `Operator-console > Field-notes > WT04 — Commander acknowledgement walk-through`
 - **Title:** `WT04 — Commander acknowledgement walk-through`
-- **Labels:** `research`, `field-note`, `walkthrough`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** WT04
 - **Participants:** Console operators (x4)
 - **User group:** Operators
 
@@ -1427,13 +1405,12 @@ Operator: "Either is better than what we have. Right now I just don't know."
 
 ### Page 45 — `Field Alpha 1 — Site Alpha day shift`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > Field Alpha 1 — Site Alpha day shift`
+- **Path:** `Operator-console > Field-notes > Field Alpha 1 — Site Alpha day shift`
 - **Title:** `Field Alpha 1 — Site Alpha day shift`
-- **Labels:** `research`, `field-note`, `field-observation`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** Field Alpha 1
 - **Participants:** Researcher (x1, observing); Console operator (x1, observed)
 - **User group:** Operators
 
@@ -1466,13 +1443,12 @@ Operator (end of shift): "I'll do the logs now. From memory."
 
 ### Page 46 — `Field Alpha 2 — Site Alpha night shift`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > Field Alpha 2 — Site Alpha night shift`
+- **Path:** `Operator-console > Field-notes > Field Alpha 2 — Site Alpha night shift`
 - **Title:** `Field Alpha 2 — Site Alpha night shift`
-- **Labels:** `research`, `field-note`, `field-observation`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** Field Alpha 2
 - **Participants:** Researcher (x1, observing); Console operator (x1, observed)
 - **User group:** Operators
 
@@ -1503,13 +1479,12 @@ Operator (end of shift, doing logs): "I'm guessing at what I was thinking three 
 
 ### Page 47 — `Field Bravo 1 — Site Bravo day shift`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > Field Bravo 1 — Site Bravo day shift`
+- **Path:** `Operator-console > Field-notes > Field Bravo 1 — Site Bravo day shift`
 - **Title:** `Field Bravo 1 — Site Bravo day shift`
-- **Labels:** `research`, `field-note`, `field-observation`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** Field Bravo 1
 - **Participants:** Researcher (x1, observing); Console operator (x1, observed)
 - **User group:** Operators
 
@@ -1540,13 +1515,12 @@ Operator (mid-alert, post-radio): "Did she hear me. I'm going to call again."
 
 ### Page 48 — `Field Bravo 2 — Site Bravo night shift`
 
-- **Path:** `Operator-console > Field-notes (Operator-console) > Field Bravo 2 — Site Bravo night shift`
+- **Path:** `Operator-console > Field-notes > Field Bravo 2 — Site Bravo night shift`
 - **Title:** `Field Bravo 2 — Site Bravo night shift`
-- **Labels:** `research`, `field-note`, `field-observation`
-- **Body:**
+- **Parent:** `Field-notes`
+- **Description:**
 
 ```
-- **Session ID:** Field Bravo 2
 - **Participants:** Researcher (x1, observing); Console operator (x1, observed)
 - **User group:** Operators
 
@@ -1577,30 +1551,30 @@ Operator (end of shift): "Three weeks here and I'm still figuring out what's a r
 
 ---
 
-### Page 49 — `Test-plans (Programme-wide)` (folder placeholder under Programme-wide)
+### Page 49 — `Test-plans` (grouping placeholder under Programme-wide)
 
-- **Path:** `Programme-wide > Test-plans (Programme-wide)`
-- **Title:** `Test-plans (Programme-wide)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Programme-wide > Test-plans`
+- **Title:** `Test-plans`
+- **Parent:** `Programme-wide`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
-### Page 50 — `Test-plans (Operator-console)` (folder placeholder under Operator-console)
+### Page 50 — `Test-plans` (grouping placeholder under Operator-console)
 
-- **Path:** `Operator-console > Test-plans (Operator-console)`
-- **Title:** `Test-plans (Operator-console)`
-- **Labels:** none
-- **Body:** `Placeholder — created to support filing structure.`
+- **Path:** `Operator-console > Test-plans`
+- **Title:** `Test-plans`
+- **Parent:** `Operator-console`
+- **Description:** `Placeholder — created to support filing structure.`
 
 ---
 
 ### Page 51 — `Console-v1-usability-test` (test plan)
 
-- **Path:** `Operator-console > Test-plans (Operator-console) > Console-v1-usability-test`
+- **Path:** `Operator-console > Test-plans > Console-v1-usability-test`
 - **Title:** `Console-v1-usability-test`
-- **Labels:** `test`, `artefact`, `test-plan`
-- **Body:**
+- **Parent:** `Test-plans`
+- **Description:**
 
 ```
 # Test plan: Console v1 — operator usability test
@@ -1706,7 +1680,8 @@ Report back to the user with:
 
 1. The total number of pages created
 2. Any pages that already existed and were updated vs newly created
-3. The full URL of the top-level `Knowledge Base` page in the SKYPROTECT space so the user can verify
-4. Any issues encountered (e.g. permissions, name conflicts) — verbatim, no paraphrasing
+3. The native Plane identifiers assigned to the field-note pages (25-48), so the user can confirm the artefact citations resolve
+4. The full URL of the top-level `Knowledge Base` page in the SKYPROTECT project so the user can verify
+5. Any issues encountered (e.g. permissions, name conflicts) — verbatim, no paraphrasing
 
 If anything was not created, do **not** retry or improvise. Stop and report.

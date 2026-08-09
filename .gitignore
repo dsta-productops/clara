@@ -10,3 +10,11 @@ AI_HANDOFF.md
 out/
 next-env.d.ts
 *.tsbuildinfo
+
+# Build output (generated per platform in the consumer repos)
+dist/
+dist-plane/
+dist-confluence/
+
+# Local editor / Claude Code session state
+.claude/
