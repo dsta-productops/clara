@@ -99,6 +99,14 @@ export const artefacts: Artefact[] = [
     filesTo: "Knowledge Base/{track}/Mission-threads/{mission-task}",
   },
   {
+    slug: "problem-impact-ranker",
+    title: "Problem-impact ranker",
+    phase: "research",
+    tagline:
+      "Rank captured problems by impact — reach, severity, evidence, and leverage — into a tiered queue that says which problem to build for first.",
+    filesTo: "Knowledge Base/{track}/Problem-impact-analysis",
+  },
+  {
     slug: "prd-generator",
     title: "PRD generator",
     phase: "research",

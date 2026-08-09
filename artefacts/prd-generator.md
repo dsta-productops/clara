@@ -6,6 +6,7 @@ tool: "clara"
 task: "draft a v0 PRD from research synthesis and prior framing"
 expectedOutput: "Markdown PRD with 7 standard sections, with clarifying questions where input is incomplete."
 inputsFrom:
+  - problem-impact-ranker
   - research-synthesiser
   - persona-generator
 @@if confluence@@
@@ -15,6 +16,8 @@ confluenceContext:
 planeContext:
 @@endif@@
   inputs:
+    - what: "The problem to build for"
+      description: "The top-ranked (or user-chosen) problem from `Knowledge Base/{{track}}/Problem-impact-analysis`. Falls back to programme-wide. If a ranking exists, the PRD is drafted for one problem lifted from it; if the user names a different rank, use that. When no ranking exists, fall back to the Research-synthesis problem statement directly."
     - what: "Problem statement and Success criteria"
       description: "Problem-statement and Success-criteria sections of `Knowledge Base/{{track}}/Research-synthesis`. Falls back to `Knowledge Base/Programme-wide/Research-synthesis` when no track-level version exists."
     - what: "Persona for the PRD"
@@ -48,6 +51,7 @@ Use this prompt to draft a first-pass PRD from research synthesis and stakeholde
 
 # inputs
 
+- Read `Knowledge Base/{{track}}/Problem-impact-analysis` (fall back to programme-wide). If a ranking exists, draft the PRD for the **top-ranked problem** unless the user names a different rank — confirm which problem before drafting. If no ranking exists, work from the Research-synthesis problem statement directly.
 - Read the Problem-statement and Success-criteria sections of `Knowledge Base/{{track}}/Research-synthesis` (fall back to programme-wide when no track-level version exists).
 - Look up the persona at `Knowledge Base/{{track}}/Personas/*` (fall back to programme-wide). Ask the user which persona if multiple.
 - Optionally read the Themes section of `Knowledge Base/{{track}}/Research-synthesis` (or programme-wide).
