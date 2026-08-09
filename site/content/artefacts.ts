@@ -115,6 +115,14 @@ export const artefacts: Artefact[] = [
     filesTo: "Knowledge Base/{track}/PRDs/{prd-title}",
   },
   {
+    slug: "before-after-journey-mapper",
+    title: "Before/after journey mapper",
+    phase: "design",
+    tagline:
+      "Lay today's journey beside the future-state with the product — phase by phase, each tagged with the ranked problems it addresses.",
+    filesTo: "Knowledge Base/{track}/Before-after-journeys/{journey-scope}",
+  },
+  {
     slug: "capability-storyboard-scripter",
     title: "Capability-storyboard scripter",
     phase: "design",
