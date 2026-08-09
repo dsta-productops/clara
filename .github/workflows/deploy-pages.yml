@@ -42,7 +42,7 @@ jobs:
 
       - name: Build static export
         env:
-          NEXT_PUBLIC_BASE_PATH: /clara-core
+          NEXT_PUBLIC_BASE_PATH: /clara
         run: pnpm build
 
       - name: Disable Jekyll
