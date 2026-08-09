@@ -4,6 +4,18 @@ import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { type Artefact, artefacts, phases } from "@/content/artefacts";
 
+const COUNT_WORDS: Record<number, string> = {
+  12: "Twelve",
+  13: "Thirteen",
+  14: "Fourteen",
+  15: "Fifteen",
+  16: "Sixteen",
+  17: "Seventeen",
+  18: "Eighteen",
+};
+
+const artefactCount = COUNT_WORDS[artefacts.length] ?? String(artefacts.length);
+
 function ArtefactCard({ artefact }: { artefact: Artefact }) {
   return (
     <Card className="flex flex-col snap-start">
@@ -44,7 +56,7 @@ export function ArtefactCatalogue() {
             What CLARA drafts
           </Text>
           <Heading as="h2" size="3xl" className="text-balance">
-            Twelve artefacts. Three phases of work.
+            {artefactCount} artefacts. Three phases of work.
           </Heading>
           <Text size="md" variant="muted" className="leading-relaxed">
             CLARA&rsquo;s catalogue spans Research, Design, and Test &mdash; from
