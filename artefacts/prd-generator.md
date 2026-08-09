@@ -3,8 +3,8 @@ title: "PRD generator"
 phase: "research"
 domain: "digital"
 tool: "clara"
-task: "draft a v0 PRD from research synthesis and prior framing"
-expectedOutput: "Markdown PRD with 7 standard sections, with clarifying questions where input is incomplete."
+task: "draft a v0 PRD from the problem-impact ranking, research synthesis, and prior framing"
+expectedOutput: "Markdown PRD with 8 standard sections — including a Scope table that rolls ranked problems up into product modules (module / rolls-up-ranks / core job) and a prioritised user-story table (id·rank / as-a / i-want / so-that / evidence). Clarifying questions where input is incomplete."
 inputsFrom:
   - problem-impact-ranker
   - research-synthesiser
@@ -71,12 +71,23 @@ Produce a PRD using this structure, one `##` heading per section:
 1. **Problem statement** (1 paragraph) — framed as a problem, not a solution in disguise; names who has the problem.
 2. **Target users / operators** — link to the specific persona page(s); no implicit "the user".
 3. **Goals and non-goals** — what this release is trying to achieve, and what it is explicitly *not* doing (contested or out-of-evidence items go under non-goals, with the reason).
-4. **In scope / out of scope** — bounded both ways; "out of scope" usually shortens later debates.
-5. **User stories** — one `###` sub-heading per story, labelled `User story N — <short title>`. Under each, in this order:
-   - The story itself, phrased as an outcome (`As a <persona>, when <situation>, I want <capability>, so <benefit>.`) — not a feature.
-   - **Why this priority** — the evidence and ranking rationale (severity/frequency, which sessions support it).
-   - **Independent test** — how this story could be validated on its own, without the other stories being built first.
-   - **Acceptance scenarios** — Given/When/Then bullets; flag any `[contested]` / `[research gap]` / `[assumption]` inline rather than inventing.
+4. **Scope — modules** — roll the ranked problems up into product modules. Present as a table, one row per module, highest-impact modules first:
+
+   | Module | Rolls up ranks | Core job |
+   |---|---|---|
+   | [module name] | [rank #s from the Problem-impact analysis, e.g. 1, 2, 3] | [one line — what this module does] |
+
+   - Cluster the ranks using the Problem-impact analysis's own "Reading the ranking" clusters where present (problems that are one root cause seen from several seats belong in one module). A single high-impact root cause can be its own module; low-leverage or discovery-stage ranks either fold into a related module or drop to Out of scope.
+   - Follow the table with a short **Out of scope** list — each excluded item names the rank and the reason (policy-not-product, back-stage-gated, discovery-stage, explicitly out per stakeholder). "Out of scope" usually shortens later debates.
+5. **Prioritised user stories** — present as a table, ordered by priority (the top-ranked problems first). One row per story:
+
+   | ID · rank | As a… | I want… | So that… | Evidence it grounds to |
+   |---|---|---|---|---|
+   | #1 · R[rank] | [persona / role] | [capability, phrased as an outcome not a feature] | [the benefit] | [verbatim quote or observation + source ref + impact score; flag `[contested]` / `[research gap]` / `[assumption]` here rather than inventing] |
+
+   - The `ID · rank` cell ties each story back to the rank(s) it serves in the Problem-impact analysis (e.g. `#1 · R1/R3`), so priority is traceable to impact, not asserted.
+   - Every row's Evidence cell must cite real grounding — a session verbatim, an observation, or a document — with its source ref. If a story has no recorded evidence, say so and flag it; do not invent a quote.
+   - For build-ready PRDs, the top stories can each be expanded with Given/When/Then acceptance scenarios and an independent test below the table; keep these to the stories that are actually going into a build cycle.
 6. **Success criteria** (measurable, capability-focused) — what the capability has to be able to do, and to what threshold. No "users will feel more confident" non-criteria.
 7. **Constraints and dependencies** — every external thing the work depends on; re-read with "what would block this?" in mind.
 8. **Open questions** — honest unknowns; the first draft is meant to be wrong in interesting ways.
@@ -110,8 +121,8 @@ Before sharing the PRD with stakeholders, walk through these checks. Most teams 
 
 - **Problem statement** is one paragraph, framed as a problem (not a solution in disguise). Has a clear "who has the problem."
 - **Success criteria** are measurable and capability-focused — what the capability or product has to be able to do, and to what threshold. No "users will feel more confident" non-criteria.
-- **Scope** is bounded both ways — what's in *and* what's out. "Out of scope" usually shortens later debates.
-- **User stories / jobs-to-be-done** describe outcomes, not features.
+- **Scope table** rolls every relevant rank up into a module (or explicitly drops it to Out of scope). No ranked problem is silently unaccounted for; "Out of scope" names the rank and the reason.
+- **User-story table** is ordered by priority, every row's `ID · rank` ties back to the ranking, and every Evidence cell cites a real verbatim/observation with its source ref. Stories describe outcomes, not features.
 - **Constraints and dependencies** name every external thing the work depends on. Re-read with "what would block this?" in mind.
 - **Open questions** are honest. The first draft is supposed to be wrong in interesting ways; the open questions are where you flag what you don't know.
 - **Persona references** link to specific persona pages — no implicit "the user".
