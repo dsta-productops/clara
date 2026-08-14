@@ -40,27 +40,32 @@ The artefact-type nodes created at every level (Programme-wide and each track) d
 4. `Research-synthesis`
 5. `Personas`
 6. `Journeys`
+7. `Problem-impact-analysis`
 
 **Research phase — digital programmes additionally get:**
 
-7. `Service-blueprints`
-8. `PRDs`
+8. `Service-blueprints`
+9. `PRDs`
 
 **Research phase — engineering programmes additionally get:**
 
-7. `Operational-scenarios`
-8. `Capability-specs`
-9. `Mission-threads`
+8. `Operational-scenarios`
+9. `Capability-specs`
+10. `Mission-threads`
+
+**Design phase — digital programmes only:**
+
+- `Before-after-journeys`
 
 **Design phase — engineering programmes only:**
 
-10. `Capability-storyboards`
+- `Capability-storyboards`
 
 **Test phase — shared (every programme):**
 
 - `Test-plans` (always last)
 
-`Research-synthesis` is created as a leaf page per track (not a container node with children), as each track produces one synthesis document held in that page's body. All other types are container nodes holding leaf artefact pages.
+`Research-synthesis` and `Problem-impact-analysis` are each created as a leaf page per track (not a container node with children), as each track produces one of each, held in that page's body. All other types are container nodes holding leaf artefact pages.
 
 All node titles are plain — no `({{track}})` suffix — per the naming rule in `conventions/mcp.md`.
 
