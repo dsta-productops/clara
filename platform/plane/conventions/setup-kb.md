@@ -41,17 +41,18 @@ The artefact-type nodes created at every level (Programme-wide and each track) d
 5. `Personas`
 6. `Journeys`
 7. `Problem-impact-analysis`
+8. `Heuristic-evaluations`
 
 **Research phase — digital programmes additionally get:**
 
-8. `Service-blueprints`
-9. `PRDs`
+9. `Service-blueprints`
+10. `PRDs`
 
 **Research phase — engineering programmes additionally get:**
 
-8. `Operational-scenarios`
-9. `Capability-specs`
-10. `Mission-threads`
+9. `Operational-scenarios`
+10. `Capability-specs`
+11. `Mission-threads`
 
 **Design phase — digital programmes only:**
 

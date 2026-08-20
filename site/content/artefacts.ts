@@ -36,6 +36,14 @@ export const artefacts: Artefact[] = [
     filesTo: "Knowledge Base/{track}/Prior-knowledge/{topic}",
   },
   {
+    slug: "heuristic-evaluator",
+    title: "Heuristic evaluator",
+    phase: "research",
+    tagline:
+      "Run a Nielsen heuristic usability evaluation of an existing or competitor product — from screenshots, a URL, or a deck — into a scored, evidence-anchored report.",
+    filesTo: "Knowledge Base/{track}/Heuristic-evaluations/{product-name}",
+  },
+  {
     slug: "interview-guide-generator",
     title: "Interview-guide generator",
     phase: "research",

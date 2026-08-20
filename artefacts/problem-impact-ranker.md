@@ -9,6 +9,7 @@ inputsFrom:
   - research-synthesiser
   - persona-generator
   - prior-knowledge-summariser
+  - heuristic-evaluator
 @@if confluence@@
 confluenceContext:
 @@endif@@
@@ -26,6 +27,8 @@ planeContext:
       description: "Field notes, workshop/board exports, or a pasted list of pain points. The source of the verbatims and evidence markers each problem entry must cite. Never invent evidence."
     - what: "Journeys and service blueprints (optional)"
       description: "Pages under `Knowledge Base/{{track}}/Journeys/*` and `.../Service-blueprints/*`. Used to score Leverage — which problems share a single root cause seen from several seats."
+    - what: "Heuristic evaluation of an existing/competitor product (optional)"
+      description: "Pages under `Knowledge Base/{{track}}/Heuristic-evaluations/*` or `Knowledge Base/Programme-wide/Heuristic-evaluations/*`. Each severity-rated finding is a candidate problem already scored for severity and grounded to a screen — fold them into the register (cite the finding ID as evidence), and let their severity inform the Severity and Evidence scores."
   outputPathTemplate: "Knowledge Base/{{track}}/Problem-impact-analysis"
 visibility: "public"
 status: "ready"
@@ -46,6 +49,7 @@ Use this prompt to consolidate the problems captured for a programme into a sing
 - Look up the **persona(s)** at `Knowledge Base/{{track}}/Personas/*` (fall back to programme-wide) to score Reach — which roles each problem hits, and how often.
 - Search `Knowledge Base/{{track}}/Prior-knowledge/*` and programme-wide for **prior-knowledge summaries** — what's already proven or already in flight. This grounds the Evidence and Value scores.
 - Gather the **raw sources** the problems came from — field notes, workshop/board exports, or a pasted list — for the verbatims and evidence each entry must cite.
+- Search `Knowledge Base/{{track}}/Heuristic-evaluations/*` and programme-wide for a **heuristic evaluation** of an existing or competitor product. Each finding is a candidate problem already scored for severity and tied to a screen — fold them into the register and cite the finding ID as evidence.
 @@if confluence@@
 - Optionally read **journeys and service blueprints** in the space to judge Leverage — which problems are one root cause seen from several seats.
 - Show the user everything you found — the friction table, personas, prior-knowledge, and raw sources — and ask them to confirm or refine the problem set before you score it.

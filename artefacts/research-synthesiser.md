@@ -8,6 +8,7 @@ expectedOutput: "A single markdown page with four sections — Themes, Friction 
 inputsFrom:
   - interview-guide-generator
   - prior-knowledge-summariser
+  - heuristic-evaluator
 @@if confluence@@
 confluenceContext:
 @@endif@@
@@ -26,6 +27,8 @@ planeContext:
       description: "Search both `Knowledge Base/{{track}}/Prior-knowledge/*` and `Knowledge Base/Programme-wide/Prior-knowledge/*`. Use it for grounding — the synthesis should build on what's already known, not re-discover it."
     - what: "Interview guide used in the field (optional)"
       description: "Search both `Knowledge Base/{{track}}/Interview-guides/*` and `Knowledge Base/Programme-wide/Interview-guides/*`. The guide's outcome question tells you what the synthesis is meant to answer."
+    - what: "Heuristic evaluation of an existing/competitor product (optional)"
+      description: "Search both `Knowledge Base/{{track}}/Heuristic-evaluations/*` and `Knowledge Base/Programme-wide/Heuristic-evaluations/*`. Where one exists, its severity-rated findings are evidence: they surface friction points and feed the problem statement, so they belong in the synthesis alongside the field notes."
   outputPathTemplate: "Knowledge Base/{{track}}/Research-synthesis"
 visibility: "public"
 status: "ready"
@@ -49,6 +52,7 @@ Use this prompt to synthesise a batch of interview transcripts and field observa
 @@endif@@
 - Search both `Knowledge Base/{{track}}/Prior-knowledge/*` and `Knowledge Base/Programme-wide/Prior-knowledge/*` for prior-knowledge summaries that should ground the synthesis.
 - Search both `Knowledge Base/{{track}}/Interview-guides/*` and `Knowledge Base/Programme-wide/Interview-guides/*` for the interview guide used in the field — the guide's outcome question tells you what the synthesis is meant to answer.
+- Search both `Knowledge Base/{{track}}/Heuristic-evaluations/*` and `Knowledge Base/Programme-wide/Heuristic-evaluations/*` for a heuristic evaluation of an existing or competitor product. Where one exists, treat its severity-rated findings as evidence — they surface friction and inform the problem statement, so fold them in alongside the field notes (cite them by finding ID).
 @@if confluence@@
 - Show the user everything you found — separately for the track folder, the Programme-wide folder, and the broader space — and ask them to confirm or refine the set before reading in detail.
 @@endif@@
