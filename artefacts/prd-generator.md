@@ -4,7 +4,7 @@ phase: "research"
 domain: "digital"
 tool: "clara"
 task: "draft a v0 PRD from the problem-impact ranking, research synthesis, and prior framing"
-expectedOutput: "Markdown PRD with 8 standard sections — including a Scope table that rolls ranked problems up into product modules (module / rolls-up-ranks / core job) and prioritised user stories in two layers: a summary table (id·rank·priority / as-a / i-want / so-that / evidence) plus an expanded block for every story (Why this priority / Independent Test / robust Gherkin acceptance scenarios covering happy path, invalid input, duplicate/conflict, boundary limits and their transitions, state/permission, and accessibility/non-functional), with thin-evidence stories flagged rather than dropped. Clarifying questions where input is incomplete."
+expectedOutput: "Markdown PRD with 8 standard sections — including a Scope table that rolls ranked problems up into product modules (module / rolls-up-ranks / core job) and prioritised user stories in two layers: a summary table (id·rank·priority / as-a / i-want / so-that / evidence) plus an expanded block for every story (Independent Test / robust Gherkin acceptance scenarios covering happy path, invalid input, duplicate/conflict, boundary limits and their transitions, state/permission, and accessibility/non-functional), with thin-evidence stories flagged rather than dropped. Clarifying questions where input is incomplete."
 inputsFrom:
   - problem-impact-ranker
   - research-synthesiser
@@ -87,7 +87,7 @@ Produce a PRD using this structure, one `##` heading per section:
    |---|---|---|---|---|
    | #1 · R[rank] · P1 | [persona / role] | [capability, phrased as an outcome not a feature] | [the benefit] | [verbatim quote or observation + source ref + impact score; flag `[contested]` / `[research gap]` / `[assumption]` here rather than inventing] |
 
-   - The `ID · rank · priority` cell ties each story back to the rank(s) it serves in the Problem-impact analysis (e.g. `#1 · R1/R3 · P1`), so priority is traceable to impact, not asserted. Priority (`P1`, `P2`, …) is the build order — usually tracking the impact rank, but a story may be re-prioritised if it is a prerequisite for, or superseded by, another (say why in the expanded block).
+   - The `ID · rank · priority` cell ties each story back to the rank(s) it serves in the Problem-impact analysis (e.g. `#1 · R1/R3 · P1`), so priority is traceable to impact, not asserted. Priority (`P1`, `P2`, …) is the build order — usually tracking the impact rank, but a story may be re-prioritised if it is a prerequisite for, or superseded by, another; when it diverges from the rank, add a one-line note in the Evidence cell saying why.
    - Every row's Evidence cell must cite real grounding — a session verbatim, an observation, or a document — with its source ref. If a story has no recorded evidence, say so and flag it; do not invent a quote.
 
    **5b. Expanded stories** — follow the table with a detailed block for **every** story in it, in priority order. No story is table-only: each row above gets a matching block below, so the PRD is a complete build spec rather than a v0 with follow-ups deferred.
@@ -97,8 +97,6 @@ Produce a PRD using this structure, one `##` heading per section:
    > **User Story [n] — [short name] (Priority: P[n])**
    >
    > As a [persona / role], I want [capability, phrased as an outcome] so that [the benefit].
-   >
-   > **Why this priority:** [what makes this P[n] — what it depends on, what it unlocks, or what it supersedes. Ties back to the impact rank and to the other stories' priorities.]
    >
    > **Independent Test:** [how this story can be verified on its own — the observable behaviour a tester would set up and check, without depending on other unbuilt stories.]
    >
@@ -112,7 +110,6 @@ Produce a PRD using this structure, one `##` heading per section:
    > 6. **Given** [the boundary condition has cleared — e.g. count drops back below the cap], **When** [the action is retried], **Then** [normal behaviour resumes]. — *recovery / transition*
    > 7. **Given** [a UI that surfaces status or thresholds], **When** [it is displayed], **Then** [the state is conveyed by text or icon in addition to colour (never colour alone) to satisfy WCAG 2.1 AA], **And** [indicator colours meet a minimum 4.5:1 contrast ratio against their background]. — *accessibility / non-functional*
 
-   - **Why this priority** must reference the ranking and the neighbouring stories — a P2 that depends on a P1, or supersedes an earlier behaviour, says so. Don't assert a priority without the dependency reasoning.
    - **Independent Test** describes a self-contained check: the story should be verifiable without waiting on other unbuilt stories. If it genuinely can't be tested independently, say what it depends on rather than pretending it can.
    - **Acceptance Scenarios use Gherkin.** Every scenario is one behaviour written as `Given … When … Then …`, with `And` / `But` for extra context, actions, or outcomes. Steps are declarative (describe the state and the observable outcome, not the UI mechanics). Number the scenarios; a short trailing `— *label*` naming which ground it covers is encouraged.
    - **Every story carries at least one scenario — the happy path is the floor.** No story is exempt. A story with genuinely no interactive behaviour still gets its one happy-path scenario asserting the observable outcome.
@@ -161,7 +158,7 @@ Before sharing the PRD with stakeholders, walk through these checks. Most teams 
 - **Success criteria** are measurable and capability-focused — what the capability or product has to be able to do, and to what threshold. No "users will feel more confident" non-criteria.
 - **Scope table** rolls every relevant rank up into a module (or explicitly drops it to Out of scope). No ranked problem is silently unaccounted for; "Out of scope" names the rank and the reason.
 - **User-story summary table** is ordered by priority, every row's `ID · rank · priority` ties back to the ranking, and every Evidence cell cites a real verbatim/observation with its source ref. Stories describe outcomes, not features.
-- **Expanded stories** exist for *every* story in the summary table (none is table-only), each with a **Why this priority** that references the ranking and neighbouring stories (dependencies/supersessions named) and an **Independent Test** that is genuinely self-contained (or names what it depends on).
+- **Expanded stories** exist for *every* story in the summary table (none is table-only), each with an **Independent Test** that is genuinely self-contained (or names what it depends on).
 - **Every user story has at least one corresponding acceptance scenario** — table rows, expanded blocks, and scenario sets are strictly 1:1. No story is left without a scenario; a thin story still carries a full happy-path Gherkin scenario with `[TBD]` placeholders in its steps, never a bare "TBD" line.
 - **Acceptance Scenarios are robust Gherkin.** Each is one behaviour in `Given … When … Then …` (with `And`/`But`), and — for every story with real interactive behaviour — the set covers the grounds the story actually has: happy path, invalid/missing input, duplicate/conflict, boundary limits at the *exact* edges (soft vs hard, plus the transition back across the threshold, using concrete example values), state/permission, and an accessibility/non-functional scenario wherever status or colour-coding is shown (status by text/icon not colour alone; contrast ≥ 4.5:1; WCAG 2.1 AA). Every `Then` is observable and specific — a named message, value, count, or state, never "it works". No invented thresholds — unspecified limits are `[TBD]` placeholders raised in Open questions, and a thin story keeps its block but marks scenarios `TBD — needs [X]`.
 - **Constraints and dependencies** name every external thing the work depends on. Re-read with "what would block this?" in mind.
