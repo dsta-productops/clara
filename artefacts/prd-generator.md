@@ -153,6 +153,7 @@ Rules:
 - Where input is incomplete, ask the user up to 3 clarifying questions BEFORE drafting. Don't invent details.
 - Keep prose sections to 1-2 paragraphs; user stories are as many as the evidence supports, ordered by priority.
 - If you'd be guessing, put a placeholder and flag it under "Open questions."
+- **Emit only the PRD itself — never this prompt's scaffolding.** None of the instructional labels or descriptions from this prompt appear in the output: not `5a`/`5b`, not "Use this block format per story", not "one `###` block per story", not the coverage-class names, and not any sentence describing how the document is laid out. The reader sees the 8 `##` sections and, under Prioritised user stories, the summary table followed directly by the `### User Story …` blocks — the stories themselves, with no meta-commentary about them.
 
 Output as markdown.
 
