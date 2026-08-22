@@ -53,15 +53,16 @@ export function ArtefactCatalogue() {
             weight="medium"
             className="uppercase tracking-[0.18em] text-accent"
           >
-            What CLARA drafts
+            What CLARA&rsquo;s skills do
           </Text>
           <Heading as="h2" size="3xl" className="text-balance">
-            {artefactCount} artefacts. Three phases of work.
+            {artefactCount} skills. Three phases of work.
           </Heading>
           <Text size="md" variant="muted" className="leading-relaxed">
-            CLARA&rsquo;s catalogue spans Research, Design, and Test &mdash; from
-            initial discovery through product definition, storyboards, and test
-            plans. Each artefact files to a predictable path and feeds the next.
+            CLARA&rsquo;s catalogue of skills spans Research, Design, and Test
+            &mdash; from initial discovery through product definition,
+            storyboards, and test plans. Each skill drafts an artefact that files
+            to a predictable path and feeds the next.
           </Text>
         </div>
 
