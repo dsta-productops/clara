@@ -90,9 +90,7 @@ Produce a PRD using this structure, one `##` heading per section:
    - The `ID · rank · priority` cell ties each story back to the rank(s) it serves in the Problem-impact analysis (e.g. `#1 · R1/R3 · P1`), so priority is traceable to impact, not asserted. Priority (`P1`, `P2`, …) is the build order — usually tracking the impact rank, but a story may be re-prioritised if it is a prerequisite for, or superseded by, another; when it diverges from the rank, add a one-line note in the Evidence cell saying why.
    - Every row's Evidence cell must cite real grounding — a session verbatim, an observation, or a document — with its source ref. If a story has no recorded evidence, say so and flag it; do not invent a quote.
 
-   The expanded stories (5b) are written up flush-left, below the table — see the format immediately after this list.
-
-6. **Success criteria** (measurable, capability-focused) — what the capability has to be able to do, and to what threshold. No "users will feel more confident" non-criteria.
+6. **Success criteria** — the outcome the product is being built to achieve, and the metric(s) that decide whether it's good enough. Measurable and decision-changing, not just observable. Full guidance below the expanded stories.
 7. **Constraints and dependencies** — every external thing the work depends on; re-read with "what would block this?" in mind.
 8. **Open questions** — honest unknowns; the first draft is meant to be wrong in interesting ways.
 
@@ -102,25 +100,25 @@ Below the summary table, write a detailed block for **every** story in it, in pr
 
 **Every user story must be accompanied by at least one acceptance scenario.** The summary-table rows, the expanded blocks, and their scenario sets are strictly 1:1 — no story ships without a corresponding scenario. A story with no scenario is an incomplete story, not an acceptable state.
 
-Use this block format per story:
+Use this block format per story, with `###` for the story heading:
 
-> **User Story [n] — [short name] (Priority: P[n])**
->
-> As a [persona / role], I want [capability, phrased as an outcome] so that [the benefit].
->
-> **Independent Test:** [how this story can be verified on its own — the observable behaviour a tester would set up and check, without depending on other unbuilt stories.]
->
-> **Acceptance Scenarios:**
->
-> 1. **Given** [the happy-path starting state], **When** [the primary action], **Then** [the specific observable success — a named screen, message, value, or state], **And** [any follow-on effect].
-> 2. **Given** [an attempt with missing or invalid input], **When** [I submit], **Then** [a clear, specific validation error naming the field], **And** [the user can correct and retry].
-> 3. **Given** [a conflicting or duplicate state — e.g. an entity already exists / already in the target status], **When** [I repeat the action], **Then** [the system prevents it and explains why].
-> 4. **Given** [the system at exactly the soft limit / lower boundary], **When** [the boundary action occurs], **Then** [the last-allowed behaviour, e.g. permit-but-warn].
-> 5. **Given** [the system at exactly the hard cap / upper boundary], **When** [the action occurs], **Then** [the first-disallowed behaviour, e.g. block with a named message].
-> 6. **Given** [the boundary condition has cleared — e.g. count drops back below the cap], **When** [the action is retried], **Then** [normal behaviour resumes].
-> 7. **Given** [a UI that surfaces status or thresholds], **When** [it is displayed], **Then** [the state is conveyed by text or icon in addition to colour (never colour alone) to satisfy WCAG 2.1 AA], **And** [indicator colours meet a minimum 4.5:1 contrast ratio against their background].
->
-> **Needs validation:** [the assumptions, thresholds, or decisions the scenarios above rest on that are not yet grounded in evidence and must be confirmed — by research, a stakeholder, or a design decision — before the acceptance scenarios can be treated as valid. One short bullet per item, naming *what* to confirm and *with whom / how*: e.g. "the 50/60 capacity limits — confirm with the clinic manager"; "the exact mandatory registration fields — confirm against the intake form"; "the confirmation-message wording — pending UX copy". Write "None — every scenario is grounded in cited evidence" when nothing is outstanding.]
+### User Story [n] — [short name] (Priority: P[n])
+
+As a [persona / role], I want [capability, phrased as an outcome] so that [the benefit].
+
+**Independent Test:** [how this story can be verified on its own — the observable behaviour a tester would set up and check, without depending on other unbuilt stories.]
+
+**Acceptance Scenarios:**
+
+1. **Given** [the happy-path starting state], **When** [the primary action], **Then** [the specific observable success — a named screen, message, value, or state], **And** [any follow-on effect].
+2. **Given** [an attempt with missing or invalid input], **When** [I submit], **Then** [a clear, specific validation error naming the field], **And** [the user can correct and retry].
+3. **Given** [a conflicting or duplicate state — e.g. an entity already exists / already in the target status], **When** [I repeat the action], **Then** [the system prevents it and explains why].
+4. **Given** [the system at exactly the soft limit / lower boundary], **When** [the boundary action occurs], **Then** [the last-allowed behaviour, e.g. permit-but-warn].
+5. **Given** [the system at exactly the hard cap / upper boundary], **When** [the action occurs], **Then** [the first-disallowed behaviour, e.g. block with a named message].
+6. **Given** [the boundary condition has cleared — e.g. count drops back below the cap], **When** [the action is retried], **Then** [normal behaviour resumes].
+7. **Given** [a UI that surfaces status or thresholds], **When** [it is displayed], **Then** [the state is conveyed by text or icon in addition to colour (never colour alone) to satisfy WCAG 2.1 AA], **And** [indicator colours meet a minimum 4.5:1 contrast ratio against their background].
+
+**Needs validation:** [the assumptions, thresholds, or decisions the scenarios above rest on that are not yet grounded in evidence and must be confirmed — by research, a stakeholder, or a design decision — before the acceptance scenarios can be treated as valid. One short bullet per item, naming *what* to confirm and *with whom / how*: e.g. "the 50/60 capacity limits — confirm with the clinic manager"; "the exact mandatory registration fields — confirm against the intake form"; "the confirmation-message wording — pending UX copy". Write "None — every scenario is grounded in cited evidence" when nothing is outstanding.]
 
 Rules for the expanded stories:
 
@@ -138,6 +136,18 @@ Rules for the expanded stories:
 - **Ground every threshold and value in evidence.** Pull limits, statuses and messages from the Success criteria, the ranking, or the research — do not invent a `50`/`60`/contrast figure the inputs don't support. Where a specific threshold is genuinely unspecified, write the scenario with a `[TBD — needs the actual limit]` placeholder and list it in that story's **Needs validation** section.
 - **Every `Then` is observable and specific** — a named message, screen, field, value, count, or state a tester can assert against. No `Then the system works correctly`.
 - **Thin evidence never means zero scenarios.** Where a story's evidence is too thin to specify every detail, still write at least the happy-path scenario as full Gherkin, using `[TBD — the specific value/decision still missing]` placeholders *inside* the `Given`/`When`/`Then` steps, and record each gap in that story's **Needs validation** section. Do not invent the missing specifics, and do not replace the scenario with a bare "TBD" line — every story keeps a real, structured scenario with the gaps named in place.
+
+## 6. Success criteria
+
+Success criteria state the **outcome the product is being built to achieve** and the **metric that tells you whether it's good enough** — not a list of things you happen to be able to observe. Start from three questions and answer them in order:
+
+- **What outcome do we want?** What are we building this for? Name the change in the world this release is meant to produce — for the user or the mission, not for the team. If you can't say what would be different once this ships, there is no success criterion yet.
+- **What metric measures that outcome?** For each outcome, name the specific metric that moves when the outcome is achieved. A metric earns its place only if it tells you what to **optimise**, not merely what to watch — pick the one you would actually steer the build by.
+- **What is good enough?** Give each metric a threshold, because **a metric is only useful if it changes a decision**. State the number (or the direction and target) at which the solution is acceptable to ship, and — where you can — what result would mean "not there yet, keep iterating". A metric with no decision attached is an observation, not a criterion; drop it or give it a threshold.
+
+Write each criterion so it names the outcome, the metric, and the good-enough threshold together, e.g. *"New hires complete onboarding without a support ticket — first-attempt completion rate ≥ 90% (baseline 62% from DASH); below 80% we redesign the flow."* Prefer criteria tied to a baseline from the research (e.g. the DASH baseline or the heuristic evaluation) so "better" is measurable, not asserted.
+
+Avoid non-criteria: "users will feel more confident", "the UI is cleaner", or any statement with no metric and no threshold. If the right threshold isn't known yet, name the metric and mark the threshold `[TBD — needs baseline/target]` under Open questions rather than inventing a number.
 
 Rules:
 - Where input is incomplete, ask the user up to 3 clarifying questions BEFORE drafting. Don't invent details.
@@ -167,7 +177,7 @@ Output as markdown.
 Before sharing the PRD with stakeholders, walk through these checks. Most teams will edit the draft directly to fix gaps; a few questions surface things the draft can't fix on its own.
 
 - **Problem statement** is one paragraph, framed as a problem (not a solution in disguise). Has a clear "who has the problem."
-- **Success criteria** are measurable and capability-focused — what the capability or product has to be able to do, and to what threshold. No "users will feel more confident" non-criteria.
+- **Success criteria** each name an outcome (what we're building this for), the metric that measures it, and a good-enough threshold that changes a decision — ideally tied to a research baseline. A metric with no threshold is an observation, not a criterion. No "users will feel more confident" non-criteria.
 - **Scope table** rolls every relevant rank up into a module (or explicitly drops it to Out of scope). No ranked problem is silently unaccounted for; "Out of scope" names the rank and the reason.
 - **User-story summary table** is ordered by priority, every row's `ID · rank · priority` ties back to the ranking, and every Evidence cell cites a real verbatim/observation with its source ref. Stories describe outcomes, not features.
 - **Expanded stories** exist for *every* story in the summary table (none is table-only), each with an **Independent Test** that is genuinely self-contained (or names what it depends on).
