@@ -44,7 +44,7 @@ function ArtefactCard({ artefact }: { artefact: Artefact }) {
 
 export function ArtefactCatalogue() {
   return (
-    <section id="artefacts" className="border-b border-border">
+    <section id="skills" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 py-20 sm:py-24 lg:py-28">
         <div className="max-w-2xl space-y-4">
           <Text

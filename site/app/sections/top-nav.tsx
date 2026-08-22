@@ -1,7 +1,7 @@
 const navLinks = [
   { href: "#how-it-works", label: "How it works" },
   { href: "#why-clara", label: "Why CLARA" },
-  { href: "#artefacts", label: "Artefacts" },
+  { href: "#skills", label: "Skills" },
   { href: "#deploy", label: "Deploy" },
 ];
 
