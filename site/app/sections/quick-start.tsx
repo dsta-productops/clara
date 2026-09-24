@@ -26,7 +26,7 @@ const PLATFORMS = {
     connectBody:
       "Add the Atlassian (Confluence) connector in your assistant so CLARA can read from and file back into your own space.",
     guideUrl: "https://github.com/sooperset/mcp-atlassian",
-    guideLabel: "Atlassian MCP setup guide",
+    guideLabel: "Atlassian MCP (mcp-atlassian)",
   },
   plane: {
     label: "Plane",
