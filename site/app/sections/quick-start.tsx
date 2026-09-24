@@ -13,7 +13,7 @@ const SKILL_BASE = "https://dsta-productops.github.io/clara/skill";
 
 // Bump when the hosted skill files change shape, to bust any cached fetch of a
 // prior version (GitHub Pages ignores the query, but it changes the cache key).
-const SKILL_VERSION = "2";
+const SKILL_VERSION = "3";
 
 // CLARA ships one skill file per knowledge-base backend (see
 // scripts/generate-skill-file.ts). The toggle points the starter prompt at the
