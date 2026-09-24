@@ -11,6 +11,10 @@ import { useState } from "react";
 
 const SKILL_BASE = "https://dsta-productops.github.io/clara/skill";
 
+// Bump when the hosted skill files change shape, to bust any cached fetch of a
+// prior version (GitHub Pages ignores the query, but it changes the cache key).
+const SKILL_VERSION = "2";
+
 // CLARA ships one skill file per knowledge-base backend (see
 // scripts/generate-skill-file.ts). The toggle points the starter prompt at the
 // matching file and swaps the "connect" guidance; every other step is shared.
@@ -52,7 +56,7 @@ export function QuickStart() {
   const [platform, setPlatform] = useState<PlatformKey>("confluence");
   const p = PLATFORMS[platform];
 
-  const skillUrl = `${SKILL_BASE}/${p.skillFile}`;
+  const skillUrl = `${SKILL_BASE}/${p.skillFile}?v=${SKILL_VERSION}`;
   const starterPrompt = `Read ${skillUrl} and follow it as your instructions for the rest of this chat. Then introduce yourself and ask what I'd like to create.`;
 
   return (
