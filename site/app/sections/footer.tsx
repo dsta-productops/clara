@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 const footerLinks = [
   { label: "CLARA for Plane", href: links.plane },
   { label: "CLARA for Confluence", href: links.confluence },
+  { label: "CLARA for GitLab", href: links.gitlab },
 ];
 
 export function Footer() {

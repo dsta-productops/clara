@@ -36,6 +36,18 @@ const platforms = [
     guideUrl: "https://github.com/sooperset/mcp-atlassian",
     guideLabel: "Atlassian MCP (mcp-atlassian)",
   },
+  {
+    slug: "gitlab",
+    label: "CLARA for GitLab",
+    repo: links.gitlab,
+    repoLabel: "Access repo",
+    body: "For programmes whose knowledge base lives in the GitLab project wiki. Artefacts file back as wiki pages written through git, with folders and sidebar links carrying the hierarchy, and field notes cited by Session ID.",
+    mcp: "GitLab MCP",
+    connect:
+      "CLARA reads and searches through the GitLab MCP, but writes to the wiki through git, so she also needs a shell with git and credentials that can push to the project's wiki (Developer role or above).",
+    guideUrl: "https://docs.gitlab.com/user/gitlab_duo/model_context_protocol/mcp_server/",
+    guideLabel: "GitLab MCP server guide",
+  },
 ];
 
 const youNeed = [
@@ -47,7 +59,7 @@ const youNeed = [
   {
     icon: Plug,
     title: "Knowledge-base MCP",
-    body: "Already wired into your LLM. CLARA does not require a separate connector — she uses whichever knowledge-base MCP (Plane, Confluence, and the like) your stack provides.",
+    body: "Already wired into your LLM. CLARA does not require a separate connector — she uses whichever knowledge-base MCP (Plane, Confluence, GitLab, and the like) your stack provides.",
   },
   {
     icon: CheckCircle2,
@@ -121,7 +133,7 @@ export function PlatformDeploy() {
             </Text>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {platforms.map((p) => (
               <Card key={p.slug}>
                 <CardHeader>

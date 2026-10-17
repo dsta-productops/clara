@@ -13,7 +13,7 @@ const SKILL_BASE = "https://dsta-productops.github.io/clara/skill";
 
 // Bump when the hosted skill files change shape, to bust any cached fetch of a
 // prior version (GitHub Pages ignores the query, but it changes the cache key).
-const SKILL_VERSION = "3";
+const SKILL_VERSION = "4";
 
 // CLARA ships one skill file per knowledge-base backend (see
 // scripts/generate-skill-file.ts). The toggle points the starter prompt at the
@@ -36,6 +36,15 @@ const PLATFORMS = {
       "Add the Plane MCP connector in your assistant so CLARA can read from and file back into your own project.",
     guideUrl: "https://developers.plane.so/dev-tools/mcp-server",
     guideLabel: "Plane MCP setup guide",
+  },
+  gitlab: {
+    label: "GitLab",
+    skillFile: "clara-gitlab.md",
+    connectTitle: "Full — connect GitLab",
+    connectBody:
+      "Add the GitLab MCP connector so CLARA can search your projects, and give her a shell with git credentials that can push to your project's wiki so she can file back into it.",
+    guideUrl: "https://docs.gitlab.com/user/gitlab_duo/model_context_protocol/mcp_server/",
+    guideLabel: "GitLab MCP server guide",
   },
 } as const;
 
