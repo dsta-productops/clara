@@ -60,7 +60,7 @@ function ClaraMark() {
       className="text-accent"
     >
       <path
-        d="M4.5 3.5h15v13h-6.5l-4.5 4v-4h-4z"
+        d="M7.5 3.5h9a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-3.5l-4.5 4v-4h-1a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z"
         fill="currentColor"
         stroke="currentColor"
         strokeWidth="2"
