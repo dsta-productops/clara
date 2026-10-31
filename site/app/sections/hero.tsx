@@ -6,7 +6,10 @@ import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section id="top" className="border-b border-border">
+    <section
+      id="top"
+      className="border-b border-border bg-[radial-gradient(circle,var(--color-border)_1.3px,transparent_1.6px)] bg-[length:24px_24px]"
+    >
       <div className="mx-auto max-w-6xl px-6 sm:px-8 py-24 sm:py-32 lg:py-40">
         <div className="max-w-3xl space-y-8">
           <Text
