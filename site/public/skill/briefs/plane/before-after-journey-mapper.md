@@ -36,7 +36,7 @@ The fallback is **visible**, not silent. Tell the user which version you used an
 
 - Read the current-state journey at `Knowledge Base/{{track}}/Journeys/*` — its phases/stages and steps are the BEFORE column.
 - Read the PRD at `Knowledge Base/{{track}}/PRDs/*` — its Scope-module table names the modules the AFTER column is written in. Do not introduce any capability the PRD does not scope.
-- Read `Knowledge Base/{{track}}/Problem-impact-analysis` (fall back to programme-wide) — for the per-phase "Addresses Ranks · Impact" tags and the final coverage check.
+- Read `Knowledge Base/{{track}}/Problem-impact-analysis` (fall back to programme-wide) — for the per-phase "Addresses Ranks · Score" tags and the final coverage check.
 - Optionally read the persona at `Knowledge Base/{{track}}/Personas/*` to keep steps grounded in one operator's reality.
 - Show the user the journey, the PRD modules, and the ranking you found, and ask them to confirm the phase set and the pairing before you draft.
 - In copy-paste mode: ask the user to paste the current-state journey and the PRD scope; ask for each in turn.
@@ -52,7 +52,7 @@ Phase-by-phase comparison across [scope], grounded in the ranked problems each p
 
 ## Phase N — [phase name] ([time window, if the journey has one])
 
-**Addresses Ranks [x, y] · Impact [scores]** — via [the PRD module(s) that act in this phase]
+**Addresses Ranks [x, y] · Score [totals]** — via [the PRD module(s) that act in this phase]
 
 **BEFORE — today**
 

@@ -111,7 +111,7 @@ export const artefacts: Artefact[] = [
     title: "Problem-impact ranker",
     phase: "research",
     tagline:
-      "Rank captured problems by impact — reach, severity, evidence, and leverage — into a tiered queue that says which problem to build for first.",
+      "Rank captured problems by severity, reach and frequency — each High, Medium or Low — into a tiered queue that says which problem to build for first.",
     filesTo: "Knowledge Base/{track}/Problem-impact-analysis",
   },
   {
